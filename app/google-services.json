@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1035965354754",
+    "firebase_url": "https://quanchat-cd84b.firebaseio.com",
+    "project_id": "quanchat-cd84b",
+    "storage_bucket": "quanchat-cd84b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1035965354754:android:a5cff79a049aee19",
+        "android_client_info": {
+          "package_name": "luongduongquan.com.quanchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1035965354754-otmelpv8nnokqrq2qv77rj5gd11jli7v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "luongduongquan.com.quanchat",
+            "certificate_hash": "86a42df701ae16c38dd0ac6f24fd4c2c6b81ee46"
+          }
+        },
+        {
+          "client_id": "1035965354754-9tkmckiupdnmah2ac93qmncpq2pfnv01.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSmhu2Z6UAL9pERDwjr_Gv640wfA5Kazs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1035965354754-9tkmckiupdnmah2ac93qmncpq2pfnv01.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

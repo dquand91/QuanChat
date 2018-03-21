@@ -7,6 +7,9 @@
     android:layout_height="match_parent"
     tools:context="luongduongquan.com.quanchat.MainActivity">
 
+    <include android:id="@+id/appbar_main"
+             layout="@layout/app_bar_layout"/>
+
     <TextView
         android:id="@+id/tvMainActivity"
         android:layout_width="match_parent"

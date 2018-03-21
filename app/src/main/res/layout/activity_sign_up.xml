@@ -13,7 +13,7 @@
         layout="@layout/app_bar_layout"/>
 
     <EditText
-        android:id="@+id/editName_signup"
+        android:id="@+id/edtName_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Name..."
@@ -23,24 +23,24 @@
         />
 
     <EditText
-        android:id="@+id/editEmail_signup"
+        android:id="@+id/edtEmail_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email..."
         android:padding="10dp"
-        android:layout_below="@+id/editName_signup"
+        android:layout_below="@+id/edtName_signup"
         android:layout_centerVertical="true"
         android:layout_marginTop="20dp"
 
         />
 
     <EditText
-        android:id="@+id/editPassword_signup"
+        android:id="@+id/edtPassword_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password..."
         android:padding="10dp"
-        android:layout_below="@+id/editEmail_signup"
+        android:layout_below="@+id/edtEmail_signup"
         android:layout_marginTop="20dp"
         />
 

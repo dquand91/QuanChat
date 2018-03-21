@@ -13,7 +13,7 @@
         layout="@layout/app_bar_layout"/>
 
     <EditText
-        android:id="@+id/editEmail_login"
+        android:id="@+id/edtEmail_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email..."
@@ -23,12 +23,12 @@
         />
 
     <EditText
-        android:id="@+id/editPassword_login"
+        android:id="@+id/edtPassword_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password..."
         android:padding="10dp"
-        android:layout_below="@+id/editEmail_login"
+        android:layout_below="@+id/edtEmail_login"
         android:layout_marginTop="20dp"
         />
 

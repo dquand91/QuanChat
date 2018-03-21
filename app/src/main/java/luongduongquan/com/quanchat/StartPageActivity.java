@@ -1,5 +1,6 @@
 package luongduongquan.com.quanchat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -29,8 +30,12 @@ public class StartPageActivity extends AppCompatActivity implements View.OnClick
 	public void onClick(View view) {
 		switch (view.getId()){
 			case R.id.btnHadAccount:
+				Intent intentLogin = new Intent(StartPageActivity.this, LoginActivity.class);
+				startActivity(intentLogin);
 				break;
 			case R.id.btnNeedNewAccount:
+				Intent intentSignUp = new Intent(StartPageActivity.this, SignUpActivity.class);
+				startActivity(intentSignUp);
 				break;
 		}
 

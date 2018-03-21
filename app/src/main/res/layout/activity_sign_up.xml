@@ -8,6 +8,10 @@
     android:background="@drawable/loginbackground"
     tools:context="luongduongquan.com.quanchat.SignUpActivity">
 
+    <include
+        android:id="@+id/appbar_signup"
+        layout="@layout/app_bar_layout"/>
+
     <EditText
         android:id="@+id/editName_signup"
         android:layout_width="match_parent"

@@ -20,6 +20,10 @@
         </activity>
         <activity android:name=".StartPageActivity">
         </activity>
+        <activity android:name=".LoginActivity">
+        </activity>
+        <activity android:name=".SignUpActivity">
+        </activity>
     </application>
 
 </manifest>

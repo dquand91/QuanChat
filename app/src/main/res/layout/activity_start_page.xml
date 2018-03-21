@@ -5,13 +5,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/startpage"
     tools:context="luongduongquan.com.quanchat.StartPageActivity">
 
-    <TextView
-        android:id="@+id/tvStart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Start ACtivity"
-        android:textSize="30sp"/>
+    <Button
+        android:id="@+id/btnHadAccount"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/btnNeedNewAccount"
+        android:text="Already have an account"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        />
+
+    <Button
+        android:id="@+id/btnNeedNewAccount"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:layout_marginBottom="50dp"
+        android:layout_centerHorizontal="true"
+        android:text="Need a new account"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+
+        />
+
 
 </RelativeLayout>

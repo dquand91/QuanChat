@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
 		FirebaseUser currentUser = mAuth.getCurrentUser();
 
-//		if(currentUser == null){
-//			LogoutUser();
-//		}
+		if(currentUser == null){
+			LogoutUser();
+		}
 	}
 
 	private void LogoutUser() {

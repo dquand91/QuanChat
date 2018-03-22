@@ -1,7 +1,10 @@
 package luongduongquan.com.quanchat;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -10,11 +13,17 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import luongduongquan.com.quanchat.Adapter.TabsPagerAdapter;
+
 public class MainActivity extends AppCompatActivity {
 
 	private FirebaseAuth mAuth;
 
 	private Toolbar mToolbar;
+	private ViewPager mViewPager;
+	private TabLayout mTabLayout;
+	private TabsPagerAdapter mTabsAdapter;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +31,14 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 
 		mAuth = FirebaseAuth.getInstance();
+
+		//Tabs in MainActivity
+		mViewPager = findViewById(R.id.tabPager_view_main);
+		mTabsAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+		mViewPager.setAdapter(mTabsAdapter);
+		mTabLayout = findViewById(R.id.tabLayout_main);
+		mTabLayout.setTabTextColors(Color.WHITE, Color.BLACK);
+		mTabLayout.setupWithViewPager(mViewPager);
 
 		mToolbar = findViewById(R.id.appbar_main);
 		setSupportActionBar(mToolbar);
@@ -34,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
 		FirebaseUser currentUser = mAuth.getCurrentUser();
 
-		if(currentUser == null){
-			LogoutUser();
-		}
+//		if(currentUser == null){
+//			LogoutUser();
+//		}
 	}
 
 	private void LogoutUser() {

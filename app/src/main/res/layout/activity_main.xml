@@ -8,8 +8,9 @@
     tools:context="luongduongquan.com.quanchat.MainActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar_layout_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <include
             android:id="@+id/appbar_main"
@@ -27,6 +28,7 @@
     
     <android.support.v4.view.ViewPager
         android:id="@+id/tabPager_view_main"
+        android:layout_below="@id/appBar_layout_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></android.support.v4.view.ViewPager>
 

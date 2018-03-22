@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import luongduongquan.com.quanchat.Utils.Common;
+
 public class SignUpActivity extends AppCompatActivity {
 
 	private android.support.v7.widget.Toolbar mToolbar;
@@ -95,11 +97,11 @@ public class SignUpActivity extends AppCompatActivity {
 
 	private void storeUserDefault_StartMainActivity(String name, String email, String password) {
 		String currentUserID = mAuth.getCurrentUser().getUid();
-		storeUserDefaultDataReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
-		storeUserDefaultDataReference.child("user_name").setValue(name);
-		storeUserDefaultDataReference.child("user_status").setValue("This is the status. Have a nice day.");
-		storeUserDefaultDataReference.child("user_image").setValue("default_profile");
-		storeUserDefaultDataReference.child("user_thumb_image").setValue("default_image").addOnCompleteListener(new OnCompleteListener<Void>() {
+		storeUserDefaultDataReference = FirebaseDatabase.getInstance().getReference().child(Common.USERS_TAG).child(currentUserID);
+		storeUserDefaultDataReference.child(Common.USER_NAME_TAG).setValue(name);
+		storeUserDefaultDataReference.child(Common.USER_STATUS_TAG).setValue("This is the status. Have a nice day.");
+		storeUserDefaultDataReference.child(Common.USER_IMAGE_TAG).setValue("https://s31.postimg.org/viqo2yg63/Chrome.png");
+		storeUserDefaultDataReference.child(Common.USER_THUMB_IMAGE_TAG).setValue("https://s31.postimg.org/viqo2yg63/Chrome.png").addOnCompleteListener(new OnCompleteListener<Void>() {
 			@Override
 			public void onComplete(@NonNull Task<Void> task) {
 				if (task.isSuccessful()){

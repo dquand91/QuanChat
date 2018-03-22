@@ -23,7 +23,7 @@ public class WelcomeActivity extends AppCompatActivity {
 					Log.e("ERROR", ""+ e.getMessage());
 				}
 				finally {
-					Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+					Intent intent = new Intent(WelcomeActivity.this, StartPageActivity.class);
 					startActivity(intent);
 				}
 			}

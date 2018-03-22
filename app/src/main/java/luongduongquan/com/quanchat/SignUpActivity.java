@@ -14,6 +14,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -24,6 +26,8 @@ public class SignUpActivity extends AppCompatActivity {
 
 	private FirebaseAuth mAuth;
 	private ProgressDialog loadingBar;
+
+	private DatabaseReference storeUserDefaultDataReference;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +41,7 @@ public class SignUpActivity extends AppCompatActivity {
 		getSupportActionBar().setTitle("Sign Up");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		edtName = findViewById(R.id.edtEmail_signup);
+		edtName = findViewById(R.id.edtName_signup);
 		edtEmail = findViewById(R.id.edtEmail_signup);
 		edtPassword = findViewById(R.id.edtPassword_signup);
 		btnCreate = findViewById(R.id.btnCreate_signup);
@@ -57,7 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 	}
 
-	private void registerAccount(String name, String email, String password) {
+	private void registerAccount(final String name, final String email, final String password) {
 
 		if (name.isEmpty()){
 			Toast.makeText(SignUpActivity.this, "Please input name", Toast.LENGTH_SHORT).show();
@@ -75,11 +79,9 @@ public class SignUpActivity extends AppCompatActivity {
 				@Override
 				public void onComplete(@NonNull Task<AuthResult> task) {
 					if(task.isSuccessful()){
-						loadingBar.dismiss();
-						Intent intentMain = new Intent(SignUpActivity.this, MainActivity.class);
-						intentMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-						startActivity(intentMain);
-						finish();
+
+						storeUserDefault_StartMainActivity(name,  email,  password);
+
 					} else {
 						loadingBar.dismiss();
 						Toast.makeText(SignUpActivity.this, "Error, try again", Toast.LENGTH_SHORT).show();
@@ -87,6 +89,32 @@ public class SignUpActivity extends AppCompatActivity {
 				}
 			});
 		}
+
+
+	}
+
+	private void storeUserDefault_StartMainActivity(String name, String email, String password) {
+		String currentUserID = mAuth.getCurrentUser().getUid();
+		storeUserDefaultDataReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
+		storeUserDefaultDataReference.child("user_name").setValue(name);
+		storeUserDefaultDataReference.child("user_status").setValue("This is the status. Have a nice day.");
+		storeUserDefaultDataReference.child("user_image").setValue("default_profile");
+		storeUserDefaultDataReference.child("user_thumb_image").setValue("default_image").addOnCompleteListener(new OnCompleteListener<Void>() {
+			@Override
+			public void onComplete(@NonNull Task<Void> task) {
+				if (task.isSuccessful()){
+					loadingBar.dismiss();
+					Intent intentMain = new Intent(SignUpActivity.this, MainActivity.class);
+					intentMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+					startActivity(intentMain);
+					finish();
+				} else {
+					loadingBar.dismiss();
+					Toast.makeText(SignUpActivity.this, "Error, try again", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+
 
 
 	}

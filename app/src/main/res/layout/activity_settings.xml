@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="luongduongquan.com.quanchat.SettingsActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgUser_Settings"
+        android:layout_width="200dp"
+        android:layout_height="250dp"
+        android:src="@drawable/user"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"/>
+    <TextView
+        android:id="@+id/tvUserName_Settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="UserName"
+        android:layout_below="@id/imgUser_Settings"
+        android:textSize="30sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:id="@+id/tvUserStatus_Settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="User Profile Status"
+        android:layout_below="@id/tvUserName_Settings"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        />
+
+    <Button
+        android:id="@+id/btnChangeImage_Settings"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="Change Image"
+        android:textColor="@color/colorPrimary"
+        android:background="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:layout_above="@+id/btnChangeStatus_Settings"
+        android:layout_margin="14dp"
+
+        />
+
+    <Button
+        android:id="@+id/btnChangeStatus_Settings"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="Change Status"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/holo_green_dark"
+        android:layout_marginBottom="14dp"
+        />
+
+
+
+
+</RelativeLayout>

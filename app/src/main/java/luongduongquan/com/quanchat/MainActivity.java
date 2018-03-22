@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
 			mAuth.signOut();
 			LogoutUser();
 		} else if (item.getItemId() == R.id.acc_settings_menu_main){
-
+			Intent intentToSettings = new Intent(MainActivity.this, SettingsActivity.class);
+			startActivity(intentToSettings);
 		}
 		return true;
 	}

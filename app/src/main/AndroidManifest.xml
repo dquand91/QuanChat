@@ -41,6 +41,9 @@
             android:name=".StatusActivity"
             android:parentActivityName=".SettingsActivity">
         </activity>
+        <activity android:name=".AllUserActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>

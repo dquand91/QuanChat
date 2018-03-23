@@ -74,12 +74,15 @@ public class MainActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
 
-		if(item.getItemId() == R.id.logout_menu_main){
+		if(item.getItemId() == R.id.menu_logout_main){
 			mAuth.signOut();
 			LogoutUser();
-		} else if (item.getItemId() == R.id.acc_settings_menu_main){
+		} else if (item.getItemId() == R.id.menu_account_setting_main){
 			Intent intentToSettings = new Intent(MainActivity.this, SettingsActivity.class);
 			startActivity(intentToSettings);
+		} else if (item.getItemId() == R.id.menu_userlist_main){
+			Intent intentToUserList = new Intent(MainActivity.this, AllUserActivity.class);
+			startActivity(intentToUserList);
 		}
 		return true;
 	}

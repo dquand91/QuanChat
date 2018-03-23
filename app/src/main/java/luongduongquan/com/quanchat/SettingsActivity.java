@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -75,6 +76,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
 					tvUserName.setText(name);
 					tvUserStatus.setText(status);
+					Picasso.with(SettingsActivity.this).load(userImage).into(imgUser);
 
 				}
 			}
@@ -117,6 +119,18 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 					public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 						if(task.isSuccessful()){
 							Toast.makeText(SettingsActivity.this, "Saving your image to FireBase Storage...", Toast.LENGTH_LONG).show();
+
+							String downloadURI = task.getResult().getDownloadUrl().toString();
+							userDataPreference.child(Common.USER_IMAGE_TAG).setValue(downloadURI).addOnCompleteListener(new OnCompleteListener<Void>() {
+								@Override
+								public void onComplete(@NonNull Task<Void> task) {
+									if(task.isSuccessful()){
+										Toast.makeText(SettingsActivity.this, "Image update complete...", Toast.LENGTH_LONG).show();
+
+									}
+								}
+							});
+
 						} else {
 							Toast.makeText(SettingsActivity.this, "Error occured.", Toast.LENGTH_SHORT).show();
 						}
@@ -134,12 +148,25 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 	public void onClick(View view) {
 		switch (view.getId()){
 			case R.id.btnChangeImage_Settings:
-				Intent intentToGallery = new Intent();
-				intentToGallery.setAction(Intent.ACTION_GET_CONTENT);
-				intentToGallery.setType("image/*");
-				startActivityForResult(intentToGallery, GALLERY_PICK);
+//				Intent intentToGallery = new Intent();
+//				intentToGallery.setAction(Intent.ACTION_GET_CONTENT);
+//				intentToGallery.setType("image/*");
+//				startActivityForResult(intentToGallery, GALLERY_PICK);
+				CropImage.activity()
+						.setGuidelines(CropImageView.Guidelines.ON)
+						.setAspectRatio(1,1)
+						.start(this);
 				break;
 			case R.id.btnChangeStatus_Settings:
+
+				String current_status = tvUserStatus.getText().toString();
+
+				Intent intentToStatusActivity = new Intent(SettingsActivity.this, StatusActivity.class);
+				if (!current_status.isEmpty()){
+					intentToStatusActivity.putExtra(Common.USER_STATUS_TAG, current_status);
+				}
+
+				startActivity(intentToStatusActivity);
 
 				break;
 		}

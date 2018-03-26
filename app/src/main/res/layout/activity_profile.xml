@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    tools:context="luongduongquan.com.quanchat.ProfileActivity">
+    
+    <ImageView
+        android:id="@+id/imgUser_profile"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:src="@drawable/user"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:id="@+id/tvUserName_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="User Name"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:layout_below="@+id/imgUser_profile"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvStatus_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="User Name"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:layout_below="@+id/tvUserName_profile"/>
+
+    <Button
+        android:id="@+id/btnSendOrAccept_profile"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Send Friend Request"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/btnDecline_profile"
+        android:layout_marginBottom="20dp"
+        android:background="@android:color/holo_green_dark"
+        android:textColor="@android:color/white"/>
+
+    <Button
+        android:id="@+id/btnDecline_profile"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Decline Friend Request"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/holo_red_dark"
+        android:textColor="@android:color/white"/>
+
+
+
+</RelativeLayout>

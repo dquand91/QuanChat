@@ -100,8 +100,8 @@ public class SignUpActivity extends AppCompatActivity {
 		storeUserDefaultDataReference = FirebaseDatabase.getInstance().getReference().child(Common.USERS_TAG).child(currentUserID);
 		storeUserDefaultDataReference.child(Common.USER_NAME_TAG).setValue(name);
 		storeUserDefaultDataReference.child(Common.USER_STATUS_TAG).setValue("This is the status. Have a nice day.");
-		storeUserDefaultDataReference.child(Common.USER_IMAGE_TAG).setValue("https://s31.postimg.org/viqo2yg63/Chrome.png");
-		storeUserDefaultDataReference.child(Common.USER_THUMB_IMAGE_TAG).setValue("https://s31.postimg.org/viqo2yg63/Chrome.png").addOnCompleteListener(new OnCompleteListener<Void>() {
+		storeUserDefaultDataReference.child(Common.USER_IMAGE_TAG).setValue(Common.USER_DEFAULT_IMAGE);
+		storeUserDefaultDataReference.child(Common.USER_THUMB_IMAGE_TAG).setValue(Common.USER_DEFAULT_IMAGE).addOnCompleteListener(new OnCompleteListener<Void>() {
 			@Override
 			public void onComplete(@NonNull Task<Void> task) {
 				if (task.isSuccessful()){

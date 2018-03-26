@@ -41,8 +41,11 @@
             android:name=".StatusActivity"
             android:parentActivityName=".SettingsActivity">
         </activity>
-        <activity android:name=".AllUserActivity"
+        <activity
+            android:name=".AllUserActivity"
             android:parentActivityName=".MainActivity">
+        </activity>
+        <activity android:name=".ProfileActivity">
         </activity>
     </application>
 

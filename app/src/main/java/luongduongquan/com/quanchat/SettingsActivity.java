@@ -76,7 +76,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
 					tvUserName.setText(name);
 					tvUserStatus.setText(status);
-					Picasso.with(SettingsActivity.this).load(userImage).into(imgUser);
+					Picasso.with(SettingsActivity.this).load(userImage).placeholder(R.drawable.user).into(imgUser);
 
 				}
 			}

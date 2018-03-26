@@ -1,6 +1,7 @@
 package luongduongquan.com.quanchat;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -85,7 +86,16 @@ public class AllUserActivity extends AppCompatActivity {
 					}
 				}
 				Log.d("QuanTest", "Size = " + mListUser.size());
-				mAdapter = new AllUserAdapter(mListUser);
+				mAdapter = new AllUserAdapter(getApplicationContext(), mListUser);
+				mAdapter.setCustomOnClick(new AllUserAdapter.CustomOnClick() {
+					@Override
+					public void OnClickListenerCustom(int position) {
+						String chosen_userID = mListUser.get(position).getUserID();
+						Intent intentToProfile = new Intent(AllUserActivity.this, ProfileActivity.class);
+						intentToProfile.putExtra(Common.USERS_ID_TAG, chosen_userID);
+						startActivity(intentToProfile);
+					}
+				});
 				mRecyclerUserList.setAdapter(mAdapter);
 				mAdapter.notifyDataSetChanged();
 				loadingBar.dismiss();

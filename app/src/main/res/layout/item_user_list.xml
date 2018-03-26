@@ -13,6 +13,7 @@
             android:id="@+id/userImage_item"
             android:layout_width="85dp"
             android:layout_height="85dp"
+            android:padding="10dp"
             android:src="@drawable/user"/>
 
         <LinearLayout

@@ -1,5 +1,7 @@
 package luongduongquan.com.quanchat.Adapter;
 
+import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,6 +23,8 @@ import luongduongquan.com.quanchat.R;
 
 public class AllUserAdapter extends RecyclerView.Adapter<AllUserAdapter.UserViewHolder> {
 
+	Context mContext;
+
 	public interface CustomOnClick{
 		void OnClickListenerCustom(int position);
 	}
@@ -28,7 +32,8 @@ public class AllUserAdapter extends RecyclerView.Adapter<AllUserAdapter.UserView
 	private List<User> mListUser;
 	private CustomOnClick mCustomOnClick;
 
-	public AllUserAdapter(List<User> listUser){
+	public AllUserAdapter(Context context, List<User> listUser){
+		mContext = context;
 		mListUser = listUser;
 	}
 
@@ -71,7 +76,8 @@ public class AllUserAdapter extends RecyclerView.Adapter<AllUserAdapter.UserView
 		User user = mListUser.get(position);
 		holder.tvUserName.setText(user.getUserName());
 		holder.tvUserStatus.setText(user.getUserStatus());
-		Picasso.with(holder.imgUser_holder.getContext()).load(user.getUserImage());
+		Picasso.with(mContext).load(Uri.parse(user.getUserImage())).placeholder(R.drawable.user).into(holder.imgUser_holder);
+//		Picasso.with(holder.imgUser_holder.getContext()).load(user.getUserImage());
 
 	}
 

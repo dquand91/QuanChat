@@ -13,6 +13,15 @@ public class Common {
 	public static final String USER_STATUS_TAG = "user_status";
 	public static final String USER_THUMB_IMAGE_TAG = "user_thumb_image";
 
+	public static final String FRIEND_REQUEST_TYPE_TAG = "request_type";
+	public static final String REQUEST_SEND_TAG = "sent";
+	public static final String REQUEST_RECEIVE_TAG = "receive";
+	public static final String FRIEND_REQUEST_TAG = "Friend_Request";
+	public static final String FRIEND_REQUEST_SENDER_TAG = "Sender_Request";
+	public static final String FRIEND_REQUEST_RECEIVER_TAG = "Receiver_Request";
+
+
+
 	public static final String USER_DEFAULT_IMAGE = "https://firebasestorage.googleapis.com/v0/b/quanchat-cd84b.appspot.com/o/Profile_Image%2FContact.png?alt=media&token=11f62e02-35f0-466e-8695-514e0182de0b";
 
 }

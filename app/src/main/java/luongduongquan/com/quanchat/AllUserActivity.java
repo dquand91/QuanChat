@@ -34,12 +34,16 @@ public class AllUserActivity extends AppCompatActivity {
 	private AllUserAdapter mAdapter;
 	private List<User> mListUser;
 
+
 	private ProgressDialog loadingBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_all_user);
+
+		mAuth = FirebaseAuth.getInstance();
+
 
 		loadingBar = new ProgressDialog(this);
 		loadingBar.setTitle("Getting User List");
@@ -78,7 +82,11 @@ public class AllUserActivity extends AppCompatActivity {
 							userImage = data.child(Common.USER_IMAGE_TAG).getValue().toString();
 						}
 						User user = new User(userID, userName, userStatus, userImage);
+						if (user.getUserID().equals(mAuth.getCurrentUser().getUid())){
+							continue;
+						}
 						mListUser.add(user);
+
 						Log.d("QuanTest", "userID = " + userID
 								+ " --- " + "userName = " + userName
 								+ " --- " + "userStatus = " + userStatus

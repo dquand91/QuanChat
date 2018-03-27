@@ -29,7 +29,7 @@ public class AllUserActivity extends AppCompatActivity {
 	private RecyclerView mRecyclerUserList;
 
 	private FirebaseAuth mAuth;
-	private FirebaseDatabase firebaseDatabase;
+//	private FirebaseDatabase firebaseDatabase;
 	private DatabaseReference databaseReference;
 	private AllUserAdapter mAdapter;
 	private List<User> mListUser;
@@ -50,63 +50,25 @@ public class AllUserActivity extends AppCompatActivity {
 		loadingBar.setMessage("Please wait...");
 		loadingBar.show();
 
-		//init FireBase
-		firebaseDatabase = FirebaseDatabase.getInstance();
-		// Get all data in table "Users"
-		firebaseDatabase.getReference().child(Common.USERS_TAG);
-
 		mListUser = new ArrayList<>();
 
 		mRecyclerUserList = findViewById(R.id.listAllUser_allUserList);
 		mRecyclerUserList.setHasFixedSize(true);
 		mRecyclerUserList.setLayoutManager(new LinearLayoutManager(this));
 
+		//init FireBase
+//		firebaseDatabase = ;
+		// Get all data in table "Users"
+		databaseReference = FirebaseDatabase.getInstance().getReference();
+		databaseReference.keepSynced(true);
 
 
-		firebaseDatabase.getReference().addValueEventListener(new ValueEventListener() {
+
+
+		databaseReference.child(Common.USERS_TAG).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
-				if(dataSnapshot != null){
-					mListUser.clear();
-					Log.d("QuanTest", "aaaaaaaaaa = " + dataSnapshot.toString());
-					for (DataSnapshot data: dataSnapshot.child(Common.USERS_TAG).getChildren()) {
-						Log.d("QuanTest", "data_before = " + data.toString());
-						String userID = data.getKey().toString();
-						String userName = data.child(Common.USER_NAME_TAG).getValue().toString();
-						String userStatus = "Nothing";
-						String userImage = "Nothing";
-						if(data.hasChild(Common.USER_STATUS_TAG)){
-							userStatus = data.child(Common.USER_STATUS_TAG).getValue().toString();
-						}
-						if (data.hasChild(Common.USER_IMAGE_TAG)){
-							userImage = data.child(Common.USER_IMAGE_TAG).getValue().toString();
-						}
-						User user = new User(userID, userName, userStatus, userImage);
-						if (user.getUserID().equals(mAuth.getCurrentUser().getUid())){
-							continue;
-						}
-						mListUser.add(user);
-
-						Log.d("QuanTest", "userID = " + userID
-								+ " --- " + "userName = " + userName
-								+ " --- " + "userStatus = " + userStatus
-								+  " --- " + "userImage = " + userImage);
-					}
-				}
-				Log.d("QuanTest", "Size = " + mListUser.size());
-				mAdapter = new AllUserAdapter(getApplicationContext(), mListUser);
-				mAdapter.setCustomOnClick(new AllUserAdapter.CustomOnClick() {
-					@Override
-					public void OnClickListenerCustom(int position) {
-						String chosen_userID = mListUser.get(position).getUserID();
-						Intent intentToProfile = new Intent(AllUserActivity.this, ProfileActivity.class);
-						intentToProfile.putExtra(Common.USERS_ID_TAG, chosen_userID);
-						startActivity(intentToProfile);
-					}
-				});
-				mRecyclerUserList.setAdapter(mAdapter);
-				mAdapter.notifyDataSetChanged();
-				loadingBar.dismiss();
+				updateListUser(dataSnapshot);
 			}
 
 			@Override
@@ -114,6 +76,86 @@ public class AllUserActivity extends AppCompatActivity {
 
 			}
 		});
+
+//		databaseReference.child(Common.USERS_TAG).addChildEventListener(new ChildEventListener() {
+//			@Override
+//			public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//				updateListUser(dataSnapshot);
+//			}
+//
+//			@Override
+//			public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//				updateListUser(dataSnapshot);
+//			}
+//
+//			@Override
+//			public void onChildRemoved(DataSnapshot dataSnapshot) {
+//				updateListUser(dataSnapshot);
+//			}
+//
+//			@Override
+//			public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//				updateListUser(dataSnapshot);
+//			}
+//
+//			@Override
+//			public void onCancelled(DatabaseError databaseError) {
+//
+//			}
+//		});
+
+//		databaseReference.addValueEventListener(new ValueEventListener() {
+//			@Override
+//			public void onDataChange(DataSnapshot dataSnapshot) {
+////				if(dataSnapshot != null){
+////					mListUser.clear();
+////					Log.d("QuanTest", "aaaaaaaaaa = " + dataSnapshot.toString());
+////					for (DataSnapshot data: dataSnapshot.child(Common.USERS_TAG).getChildren()) {
+////						Log.d("QuanTest", "data_before = " + data.toString());
+////						String userID = data.getKey().toString();
+////						String userName = data.child(Common.USER_NAME_TAG).getValue().toString();
+////						String userStatus = "Nothing";
+////						String userImage = "Nothing";
+////						if(data.hasChild(Common.USER_STATUS_TAG)){
+////							userStatus = data.child(Common.USER_STATUS_TAG).getValue().toString();
+////						}
+////						if (data.hasChild(Common.USER_IMAGE_TAG)){
+////							userImage = data.child(Common.USER_IMAGE_TAG).getValue().toString();
+////						}
+////						User user = new User(userID, userName, userStatus, userImage);
+////						if (user.getUserID().equals(mAuth.getCurrentUser().getUid())){
+////							continue;
+////						}
+////						mListUser.add(user);
+////
+////						Log.d("QuanTest", "userID = " + userID
+////								+ " --- " + "userName = " + userName
+////								+ " --- " + "userStatus = " + userStatus
+////								+  " --- " + "userImage = " + userImage);
+////					}
+////				}
+////				Log.d("QuanTest", "Size = " + mListUser.size());
+////				mAdapter = new AllUserAdapter(getApplicationContext(), mListUser);
+////				mAdapter.setCustomOnClick(new AllUserAdapter.CustomOnClick() {
+////					@Override
+////					public void OnClickListenerCustom(int position) {
+////						String chosen_userID = mListUser.get(position).getUserID();
+////						Intent intentToProfile = new Intent(AllUserActivity.this, ProfileActivity.class);
+////						intentToProfile.putExtra(Common.USERS_ID_TAG, chosen_userID);
+////						startActivity(intentToProfile);
+////					}
+////				});
+////				mRecyclerUserList.setAdapter(mAdapter);
+////				mAdapter.notifyDataSetChanged();
+////				loadingBar.dismiss();
+//				updateListUser(dataSnapshot);
+//			}
+//
+//			@Override
+//			public void onCancelled(DatabaseError databaseError) {
+//
+//			}
+//		});
 
 
 
@@ -125,5 +167,49 @@ public class AllUserActivity extends AppCompatActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+	}
+
+	private void updateListUser(DataSnapshot dataSnapshot){
+		if(dataSnapshot != null){
+			mListUser.clear();
+			Log.d("QuanTest", "aaaaaaaaaa = " + dataSnapshot.toString());
+			for (DataSnapshot data: dataSnapshot.getChildren()) {
+				Log.d("QuanTest", "data_before = " + data.toString());
+				String userID = data.getKey().toString();
+				String userName = data.child(Common.USER_NAME_TAG).getValue().toString();
+				String userStatus = "Nothing";
+				String userImage = "Nothing";
+				if(data.hasChild(Common.USER_STATUS_TAG)){
+					userStatus = data.child(Common.USER_STATUS_TAG).getValue().toString();
+				}
+				if (data.hasChild(Common.USER_IMAGE_TAG)){
+					userImage = data.child(Common.USER_IMAGE_TAG).getValue().toString();
+				}
+				User user = new User(userID, userName, userStatus, userImage);
+				if (user.getUserID().equals(mAuth.getCurrentUser().getUid())){
+					continue;
+				}
+				mListUser.add(user);
+
+				Log.d("QuanTest", "userID = " + userID
+						+ " --- " + "userName = " + userName
+						+ " --- " + "userStatus = " + userStatus
+						+  " --- " + "userImage = " + userImage);
+			}
+		}
+		Log.d("QuanTest", "Size = " + mListUser.size());
+		mAdapter = new AllUserAdapter(getApplicationContext(), mListUser);
+		mAdapter.setCustomOnClick(new AllUserAdapter.CustomOnClick() {
+			@Override
+			public void OnClickListenerCustom(int position) {
+				String chosen_userID = mListUser.get(position).getUserID();
+				Intent intentToProfile = new Intent(AllUserActivity.this, ProfileActivity.class);
+				intentToProfile.putExtra(Common.USERS_ID_TAG, chosen_userID);
+				startActivity(intentToProfile);
+			}
+		});
+		mRecyclerUserList.setAdapter(mAdapter);
+		mAdapter.notifyDataSetChanged();
+		loadingBar.dismiss();
 	}
 }

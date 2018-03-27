@@ -21,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -60,6 +62,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 		mAuth = FirebaseAuth.getInstance();
 		String current_user_id = mAuth.getCurrentUser().getUid();
 		userDataPreference = FirebaseDatabase.getInstance().getReference().child(Common.USERS_TAG).child(current_user_id);
+		userDataPreference.keepSynced(true);
 
 		storageReference = FirebaseStorage.getInstance().getReference().child("Profile_Image"); // Profile_Image là tên do mình đặt để tạo thư mục tên "Profile_Image" trên FireBase storage.
 
@@ -71,12 +74,26 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 				if (dataSnapshot != null){
 					String name = dataSnapshot.child(Common.USER_NAME_TAG).getValue().toString();
 					String status = dataSnapshot.child(Common.USER_STATUS_TAG).getValue().toString();
-					String userImage = dataSnapshot.child(Common.USER_IMAGE_TAG).getValue().toString();
+					final String userImage = dataSnapshot.child(Common.USER_IMAGE_TAG).getValue().toString();
 					String userThumb = dataSnapshot.child(Common.USER_THUMB_IMAGE_TAG).getValue().toString();
 
 					tvUserName.setText(name);
 					tvUserStatus.setText(status);
-					Picasso.with(SettingsActivity.this).load(userImage).placeholder(R.drawable.user).into(imgUser);
+//					Picasso.with(SettingsActivity.this).load(userImage).placeholder(R.drawable.user).into(imgUser);
+					Picasso.with(SettingsActivity.this).load(userImage)
+							.networkPolicy(NetworkPolicy.OFFLINE)
+							.placeholder(R.drawable.user)
+							.into(imgUser, new Callback() {
+								@Override
+								public void onSuccess() {
+
+								}
+
+								@Override
+								public void onError() {
+									Picasso.with(SettingsActivity.this).load(userImage).placeholder(R.drawable.user).into(imgUser);
+								}
+							});
 
 				}
 			}

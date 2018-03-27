@@ -70,6 +70,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 		// For Friend Data base
 		friendsDataReferece = FirebaseDatabase.getInstance().getReference().child(Common.FRIENDS_TAG);
+		friendsDataReferece.keepSynced(true);
+
 
 		friendsDataReferece.child(currentUserID)
 				.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -94,6 +96,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 		// For Friend Request
 		friendRequestDataReference = FirebaseDatabase.getInstance().getReference().child(Common.FRIEND_REQUEST_TAG);
+		friendsDataReferece.keepSynced(true);
 
 		friendRequestDataReference.child(currentUserID)
 				.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -134,6 +137,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 
 		userDataPreference = FirebaseDatabase.getInstance().getReference().child(Common.USERS_TAG).child(receiverID);
+		userDataPreference.keepSynced(true);
+
 
 		userDataPreference.addValueEventListener(new ValueEventListener() {
 			@Override

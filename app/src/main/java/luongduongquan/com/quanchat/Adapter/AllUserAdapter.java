@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -71,12 +73,26 @@ public class AllUserAdapter extends RecyclerView.Adapter<AllUserAdapter.UserView
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull final UserViewHolder holder, int position) {
 
-		User user = mListUser.get(position);
+		final User user = mListUser.get(position);
 		holder.tvUserName.setText(user.getUserName());
 		holder.tvUserStatus.setText(user.getUserStatus());
-		Picasso.with(mContext).load(Uri.parse(user.getUserImage())).placeholder(R.drawable.user).into(holder.imgUser_holder);
+		Picasso.with(mContext).load(Uri.parse(user.getUserImage()))
+				.networkPolicy(NetworkPolicy.OFFLINE)
+				.placeholder(R.drawable.user)
+				.into(holder.imgUser_holder, new Callback() {
+					@Override
+					public void onSuccess() {
+
+					}
+
+					@Override
+					public void onError() {
+						Picasso.with(mContext).load(Uri.parse(user.getUserImage())).placeholder(R.drawable.user).into(holder.imgUser_holder);
+					}
+				});
+//		Picasso.with(mContext).load(Uri.parse(user.getUserImage())).placeholder(R.drawable.user).into(holder.imgUser_holder);
 //		Picasso.with(holder.imgUser_holder.getContext()).load(user.getUserImage());
 
 	}

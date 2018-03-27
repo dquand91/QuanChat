@@ -20,8 +20,15 @@ public class Common {
 	public static final String FRIEND_REQUEST_SENDER_TAG = "Sender_Request";
 	public static final String FRIEND_REQUEST_RECEIVER_TAG = "Receiver_Request";
 
+	public static final String FRIENDS_TAG = "Friends";
+	public static final String UN_FRIENDS_TAG = "Unfriend this person";
+
 	public static final String NOT_FRIEND = "not_friend";
 	public static final String REQUEST_SEND = "send_request";
+	public static final String REQUEST_RECEIVE = "receive_request";
+
+	public static final String SEND_FRIEND_REQUEST = "Send Friend Request";
+
 
 
 

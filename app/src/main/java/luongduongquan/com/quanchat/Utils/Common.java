@@ -20,6 +20,9 @@ public class Common {
 	public static final String FRIEND_REQUEST_SENDER_TAG = "Sender_Request";
 	public static final String FRIEND_REQUEST_RECEIVER_TAG = "Receiver_Request";
 
+	public static final String NOT_FRIEND = "not_friend";
+	public static final String REQUEST_SEND = "send_request";
+
 
 
 	public static final String USER_DEFAULT_IMAGE = "https://firebasestorage.googleapis.com/v0/b/quanchat-cd84b.appspot.com/o/Profile_Image%2FContact.png?alt=media&token=11f62e02-35f0-466e-8695-514e0182de0b";

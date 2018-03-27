@@ -33,6 +33,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 	private DatabaseReference friendDataRegerence;
 
 	private String currentUserID, receiverID;
+	private String CURRENT_STATE;
 	// currentUserID : ID of current login user
 	// receiverID  : ID of chosen user from User list, app is showing the profile screen of this user.
 
@@ -54,6 +55,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 		btnAcceptSentRequest.setOnClickListener(this);
 		btnDeclineRequest.setOnClickListener(this);
 
+		CURRENT_STATE = Common.NOT_FRIEND;
+
 		currentUserID = mAuth.getCurrentUser().getUid();
 		if(getIntent().getExtras() != null){
 			receiverID = getIntent().getStringExtra(Common.USERS_ID_TAG);
@@ -70,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 							String request_type = dataSnapshot.child(receiverID).child(Common.FRIEND_REQUEST_TYPE_TAG).getValue().toString();
 
 							if(request_type.equals(Common.REQUEST_SEND_TAG)){
+								CURRENT_STATE = Common.REQUEST_SEND;
 								btnAcceptSentRequest.setText("Cancel Friend Request");
 							}
 						}
@@ -111,37 +115,76 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 		switch (v.getId()){
 			case R.id.btnSendOrAccept_profile:
 				btnAcceptSentRequest.setEnabled(false);
-				friendDataRegerence.child(currentUserID).child(receiverID)
-						.child(Common.FRIEND_REQUEST_TYPE_TAG).setValue(Common.REQUEST_SEND_TAG)
-						.addOnCompleteListener(new OnCompleteListener<Void>() {
-							@Override
-							public void onComplete(@NonNull Task<Void> task) {
-								// Send friend request
-								if(task.isSuccessful()){
-									// After send request success, send other API to update
-									friendDataRegerence.child(receiverID).child(currentUserID)
-											.child(Common.FRIEND_REQUEST_TYPE_TAG).setValue(Common.FRIEND_REQUEST_RECEIVER_TAG)
-											.addOnCompleteListener(new OnCompleteListener<Void>() {
-												@Override
-												public void onComplete(@NonNull Task<Void> task) {
+				if (CURRENT_STATE.equals(Common.NOT_FRIEND)){
+					sendFriendRequest();
+				}
+				if (CURRENT_STATE.equals(Common.REQUEST_SEND)){
+					sendCancelRequest();
+				}
 
-													if (task.isSuccessful()){
-														btnAcceptSentRequest.setEnabled(true);
-														btnAcceptSentRequest.setText("Cancel Friend Request");
-													}else {
-														Toast.makeText(ProfileActivity.this, "Error, Can not receive response from friend request", Toast.LENGTH_SHORT).show();
-													}
-												}
-											});
-								} else {
-									Toast.makeText(ProfileActivity.this, "Error, Can not sent friend request", Toast.LENGTH_SHORT).show();
-								}
-							}
-						});
 				break;
 			case R.id.btnDecline_profile:
 
 				break;
 		}
+	}
+
+	private void sendCancelRequest() {
+
+		friendDataRegerence.child(currentUserID).child(receiverID).removeValue()
+				.addOnCompleteListener(new OnCompleteListener<Void>() {
+					@Override
+					public void onComplete(@NonNull Task<Void> task) {
+						if (task.isSuccessful()){
+							friendDataRegerence.child(receiverID).child(currentUserID).removeValue()
+									.addOnCompleteListener(new OnCompleteListener<Void>() {
+										@Override
+										public void onComplete(@NonNull Task<Void> task) {
+											if (task.isSuccessful()){
+													btnAcceptSentRequest.setEnabled(true);
+													CURRENT_STATE = Common.NOT_FRIEND;
+													btnAcceptSentRequest.setText("Send Friend Request");
+											} else {
+												Toast.makeText(ProfileActivity.this, "Error while remove request...", Toast.LENGTH_SHORT).show();
+
+											}
+										}
+									});
+						} else {
+							Toast.makeText(ProfileActivity.this, "Error while remove request...", Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
+
+	}
+
+	private void sendFriendRequest() {
+		friendDataRegerence.child(currentUserID).child(receiverID)
+				.child(Common.FRIEND_REQUEST_TYPE_TAG).setValue(Common.REQUEST_SEND_TAG)
+				.addOnCompleteListener(new OnCompleteListener<Void>() {
+					@Override
+					public void onComplete(@NonNull Task<Void> task) {
+						// Send friend request
+						if(task.isSuccessful()){
+							// After send request success, send other API to update
+							friendDataRegerence.child(receiverID).child(currentUserID)
+									.child(Common.FRIEND_REQUEST_TYPE_TAG).setValue(Common.FRIEND_REQUEST_RECEIVER_TAG)
+									.addOnCompleteListener(new OnCompleteListener<Void>() {
+										@Override
+										public void onComplete(@NonNull Task<Void> task) {
+
+											if (task.isSuccessful()){
+												btnAcceptSentRequest.setEnabled(true);
+												btnAcceptSentRequest.setText("Cancel Friend Request");
+											}else {
+												Toast.makeText(ProfileActivity.this, "Error, Can not receive response from friend request", Toast.LENGTH_SHORT).show();
+											}
+										}
+									});
+						} else {
+							Toast.makeText(ProfileActivity.this, "Error, Can not sent friend request", Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
 	}
 }

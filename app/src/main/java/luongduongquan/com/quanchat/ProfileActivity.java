@@ -61,6 +61,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 		btnAcceptSentRequest.setOnClickListener(this);
 		btnDeclineRequest.setOnClickListener(this);
 
+		btnDeclineRequest.setVisibility(View.INVISIBLE);
+		btnDeclineRequest.setEnabled(false);
+
 		CURRENT_STATE = Common.NOT_FRIEND;
 
 		currentUserID = mAuth.getCurrentUser().getUid();
@@ -82,9 +85,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 							if(dataSnapshot.hasChild(receiverID)){
 								CURRENT_STATE = Common.FRIENDS_TAG;
 								btnAcceptSentRequest.setText(Common.UN_FRIENDS_TAG);
+								btnDeclineRequest.setVisibility(View.INVISIBLE);
+								btnDeclineRequest.setEnabled(false);
 							}
 						} else if (CURRENT_STATE.equals(Common.NOT_FRIEND)){
 							btnAcceptSentRequest.setText(Common.SEND_FRIEND_REQUEST);
+							btnDeclineRequest.setVisibility(View.INVISIBLE);
+							btnDeclineRequest.setEnabled(false);
 						}
 					}
 
@@ -99,7 +106,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 		friendsDataReferece.keepSynced(true);
 
 		friendRequestDataReference.child(currentUserID)
-				.addListenerForSingleValueEvent(new ValueEventListener() {
+				.addValueEventListener(new ValueEventListener() {
 					@Override
 					public void onDataChange(DataSnapshot dataSnapshot) {
 						Log.d("QUAN123", "current_USER_ID = " + currentUserID);
@@ -113,6 +120,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 									case Common.REQUEST_SEND_TAG:
 										CURRENT_STATE = Common.REQUEST_SEND;
 										btnAcceptSentRequest.setText("Cancel Friend Request");
+
+										btnDeclineRequest.setVisibility(View.INVISIBLE);
+										btnDeclineRequest.setEnabled(false);
+
 										break;
 									case Common.REQUEST_RECEIVE_TAG:
 										CURRENT_STATE = Common.REQUEST_RECEIVE;
@@ -120,6 +131,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 											@Override
 											public void run() {
 												btnAcceptSentRequest.setText("Accept Friend Request");
+												btnDeclineRequest.setVisibility(View.VISIBLE);
+												btnDeclineRequest.setEnabled(true);
 											}
 										});
 										break;
@@ -184,6 +197,36 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 				break;
 			case R.id.btnDecline_profile:
+				btnDeclineRequest.setEnabled(false);
+				if(CURRENT_STATE.equals(Common.REQUEST_RECEIVE)){
+					friendRequestDataReference.child(currentUserID).child(receiverID).removeValue()
+							.addOnCompleteListener(new OnCompleteListener<Void>() {
+								@Override
+								public void onComplete(@NonNull Task<Void> task) {
+									if(task.isSuccessful()){
+										friendRequestDataReference.child(receiverID).child(currentUserID).removeValue()
+												.addOnCompleteListener(new OnCompleteListener<Void>() {
+													@Override
+													public void onComplete(@NonNull Task<Void> task) {
+														if(task.isSuccessful()){
+														updateButtonSentAcceptUI(Common.NOT_FRIEND, Common.SEND_FRIEND_REQUEST, true);
+														btnDeclineRequest.setVisibility(View.INVISIBLE);
+														btnDeclineRequest.setEnabled(false);
+														} else {
+															btnAcceptSentRequest.setEnabled(true);
+															Toast.makeText(ProfileActivity.this, "Error, ", Toast.LENGTH_SHORT).show();
+														}
+
+													}
+												});
+									} else {
+										btnAcceptSentRequest.setEnabled(true);
+										Toast.makeText(ProfileActivity.this, "Error, ", Toast.LENGTH_SHORT).show();
+									}
+								}
+							});
+				}
+
 
 				break;
 		}
@@ -211,6 +254,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 //												CURRENT_STATE = Common.NOT_FRIEND;
 //												btnAcceptSentRequest.setText(Common.SEND_FRIEND_REQUEST);
 												updateButtonSentAcceptUI(Common.NOT_FRIEND, Common.SEND_FRIEND_REQUEST, true);
+												btnDeclineRequest.setVisibility(View.INVISIBLE);
+												btnDeclineRequest.setEnabled(false);
 
 											} else {
 												btnAcceptSentRequest.setEnabled(true);
@@ -275,6 +320,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 //													btnAcceptSentRequest.setText(buttonText);
 
 												updateButtonSentAcceptUI(current_state, buttonText, true);
+												btnDeclineRequest.setVisibility(View.INVISIBLE);
+												btnDeclineRequest.setEnabled(false);
 											} else {
 												btnAcceptSentRequest.setEnabled(true);
 												Toast.makeText(ProfileActivity.this, "Error while remove request...", Toast.LENGTH_SHORT).show();
@@ -309,6 +356,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 											if (task.isSuccessful()){
 												btnAcceptSentRequest.setEnabled(true);
 												btnAcceptSentRequest.setText("Cancel Friend Request");
+												btnDeclineRequest.setVisibility(View.INVISIBLE);
+												btnDeclineRequest.setEnabled(false);
 											}else {
 												btnAcceptSentRequest.setEnabled(true);
 												Toast.makeText(ProfileActivity.this, "Error, Can not receive response from friend request", Toast.LENGTH_SHORT).show();

@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import luongduongquan.com.quanchat.Utils.Common;
 
@@ -38,10 +39,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 	private DatabaseReference friendsDataReferece;
 
-	private String currentUserID, receiverID;
-	private String CURRENT_STATE;
 	// currentUserID : ID of current login user
 	// receiverID  : ID of chosen user from User list, app is showing the profile screen of this user.
+	private String currentUserID, receiverID;
+	private String CURRENT_STATE;
+
+	// For Notification
+	private DatabaseReference notificationReference;
+
 
 
 	@Override
@@ -70,6 +75,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 		if(getIntent().getExtras() != null){
 			receiverID = getIntent().getStringExtra(Common.USERS_ID_TAG);
 		}
+
+
+		// For Notification
+		notificationReference = FirebaseDatabase.getInstance().getReference().child(Common.NOTIFICATION_TAG);
+		notificationReference.keepSynced(true);
 
 		// For Friend Data base
 		friendsDataReferece = FirebaseDatabase.getInstance().getReference().child(Common.FRIENDS_TAG);
@@ -354,10 +364,31 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 										public void onComplete(@NonNull Task<Void> task) {
 
 											if (task.isSuccessful()){
-												btnAcceptSentRequest.setEnabled(true);
-												btnAcceptSentRequest.setText("Cancel Friend Request");
-												btnDeclineRequest.setVisibility(View.INVISIBLE);
-												btnDeclineRequest.setEnabled(false);
+
+												HashMap<String, String> notificationData = new HashMap<String, String>();
+												notificationData.put("from", currentUserID);
+												notificationData.put("type", "request");
+
+												// .push ở đây tức là sẽ tạo 1 child ngẫu nhiên.
+												notificationReference.child(receiverID).push().setValue(notificationData)
+														.addOnCompleteListener(new OnCompleteListener<Void>() {
+															@Override
+															public void onComplete(@NonNull Task<Void> task) {
+
+																if(task.isSuccessful()){
+																	btnAcceptSentRequest.setEnabled(true);
+																	btnAcceptSentRequest.setText("Cancel Friend Request");
+																	btnDeclineRequest.setVisibility(View.INVISIBLE);
+																	btnDeclineRequest.setEnabled(false);
+																} else {
+																	btnAcceptSentRequest.setEnabled(true);
+																	Toast.makeText(ProfileActivity.this, "Error, Can not receive response from friend request", Toast.LENGTH_SHORT).show();
+																}
+
+															}
+														});
+
+
 											}else {
 												btnAcceptSentRequest.setEnabled(true);
 												Toast.makeText(ProfileActivity.this, "Error, Can not receive response from friend request", Toast.LENGTH_SHORT).show();

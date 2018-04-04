@@ -73,7 +73,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 		currentUserID = mAuth.getCurrentUser().getUid();
 		if(getIntent().getExtras() != null){
+			Log.d("ProfileActivity", " " + receiverID + " " );
 			receiverID = getIntent().getStringExtra(Common.USERS_ID_TAG);
+			Log.d("ProfileActivity", " " + receiverID + " " );
 		}
 
 

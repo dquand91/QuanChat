@@ -17,7 +17,10 @@
         android:theme="@style/AppTheme"
         android:name=".Utils.OfflineData">
         <service
-            android:name=".MyFirebaseMessagingService">
+            android:name=".MyFirebaseMessagingService"
+            android:enabled="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
@@ -63,7 +66,13 @@
             android:parentActivityName=".MainActivity">
         </activity>
         <activity android:name=".ProfileActivity">
+            <intent-filter>
+                <action android:name="luongduongquan.com.quanchat_TARGET_NOTIFICATION"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
+
+
     </application>
 
 </manifest>

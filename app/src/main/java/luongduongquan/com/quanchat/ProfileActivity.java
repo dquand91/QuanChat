@@ -287,15 +287,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 	private void acceptRequest() {
 
 		Calendar calendar = Calendar.getInstance();
-		final SimpleDateFormat currentDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+		final SimpleDateFormat currentDateFormat = new SimpleDateFormat("dd-MMM-yyyy 'at' HH:mm:ss z");
 		final String saveCurrentDate = currentDateFormat.format(calendar.getTime());
 
-		friendsDataReferece.child(currentUserID).child(receiverID).setValue(saveCurrentDate)
+		friendsDataReferece.child(currentUserID).child(receiverID).child(Common.DATE_TAG).setValue(saveCurrentDate)
 				.addOnCompleteListener(new OnCompleteListener<Void>() {
 					@Override
 					public void onComplete(@NonNull Task<Void> task) {
 						if(task.isSuccessful()){
-							friendsDataReferece.child(receiverID).child(currentUserID).setValue(saveCurrentDate)
+							friendsDataReferece.child(receiverID).child(currentUserID).child(Common.DATE_TAG).setValue(saveCurrentDate)
 									.addOnCompleteListener(new OnCompleteListener<Void>() {
 										@Override
 										public void onComplete(@NonNull Task<Void> task) {

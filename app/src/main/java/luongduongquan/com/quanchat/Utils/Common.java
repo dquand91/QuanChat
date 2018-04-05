@@ -32,6 +32,8 @@ public class Common {
 
 	public static final String NOTIFICATION_TAG = "Notifications";
 
+	public static final String DATE_TAG = "date";
+
 
 
 

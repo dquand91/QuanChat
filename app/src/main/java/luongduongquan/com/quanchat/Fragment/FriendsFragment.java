@@ -9,11 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import luongduongquan.com.quanchat.FriendsViewHolder;
 import luongduongquan.com.quanchat.Model.Friends;
@@ -41,7 +45,7 @@ public class FriendsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View mainView = inflater.inflate(R.layout.fragment_friends, container, false);
+		final View mainView = inflater.inflate(R.layout.fragment_friends, container, false);
 		mRecyclerFriendList = mainView.findViewById(R.id.rvListFriend_fragment);
 		mRecyclerFriendList.setHasFixedSize(true);
 		mRecyclerFriendList.setLayoutManager(new LinearLayoutManager(mainView.getContext()));
@@ -51,6 +55,9 @@ public class FriendsFragment extends Fragment {
 		friendsDatabaseReference = FirebaseDatabase.getInstance().getReference().child(Common.FRIENDS_TAG).child(mAuth.getCurrentUser().getUid());
 		friendsDatabaseReference.keepSynced(true);
 
+		userListDatabaseReference = FirebaseDatabase.getInstance().getReference().child(Common.USERS_TAG);
+		userListDatabaseReference.keepSynced(true);
+
 		FirebaseRecyclerAdapter<Friends, FriendsViewHolder> friendsAdapter = new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>(
 				Friends.class,
 				R.layout.item_user_list,
@@ -58,9 +65,32 @@ public class FriendsFragment extends Fragment {
 				friendsDatabaseReference
 		) {
 			@Override
-			protected void populateViewHolder(FriendsViewHolder viewHolder, Friends model, int position) {
+			protected void populateViewHolder(final FriendsViewHolder viewHolder, Friends model, int position) {
 				viewHolder.setTvDate(model.getDate());
+
 				Log.d(TAG, "Key = " + friendsDatabaseReference.getKey());
+				Log.d(TAG, "position = " + position + " --- Key = " + getRef(position).getKey());
+				String opposite_user_id = getRef(position).getKey();
+				userListDatabaseReference.child(opposite_user_id).addValueEventListener(new ValueEventListener() {
+					@Override
+					public void onDataChange(DataSnapshot dataSnapshot) {
+						if(dataSnapshot.exists()){
+							String userName = dataSnapshot.child(Common.USER_NAME_TAG).getValue().toString();
+							String imageURL = dataSnapshot.child(Common.USER_IMAGE_TAG).getValue().toString();
+
+							viewHolder.setUserName(userName);
+							viewHolder.setAvatar(mainView.getContext(),imageURL);
+						}else {
+							Toast.makeText(mainView.getContext(), "Error....", Toast.LENGTH_SHORT).show();
+						}
+					}
+
+					@Override
+					public void onCancelled(DatabaseError databaseError) {
+
+					}
+				});
+
 
 			}
 		};

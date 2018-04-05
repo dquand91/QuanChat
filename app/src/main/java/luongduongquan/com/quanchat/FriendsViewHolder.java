@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -40,6 +42,7 @@ public class FriendsViewHolder extends RecyclerView.ViewHolder{
 
 	public void setAvatar(Context context, String urlImage){
 		imgUser_holder = mView.findViewById(R.id.userImage_item);
+		Picasso.with(context).load(urlImage).into(imgUser_holder);
 	}
 
 	public void setTvDate(String date){

@@ -74,13 +74,13 @@ public class MainActivity extends AppCompatActivity {
 		super.onStop();
 
 		if(currentUser != null){
-			userReference.child(Common.ONLINE_TAG).setValue(false);
+			userReference.child(Common.ONLINE_TAG).setValue(System.currentTimeMillis());
 		}
 	}
 
 	private void LogoutUser() {
 		if(currentUser != null){
-			userReference.child(Common.ONLINE_TAG).setValue(false);
+			userReference.child(Common.ONLINE_TAG).setValue(System.currentTimeMillis());
 		}
 		Intent intentStartPage = new Intent(MainActivity.this, StartPageActivity.class);
 		intentStartPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);  // After start other Activity Do not allow user press back to back this Main Activity

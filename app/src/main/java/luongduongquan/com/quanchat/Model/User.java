@@ -21,14 +21,14 @@ public class User {
 	private String UserEmail;
 	private String UserImage;
 	private String UserThumb;
-	private boolean IsOnline;
+	private String LastOnline;
 
-	public User(String userID,String userName, String userStatus, String userImage, boolean isOnline) {
+	public User(String userID,String userName, String userStatus, String userImage, String lastOnline) {
 		UserID = userID;
 		UserName = userName;
 		UserStatus = userStatus;
 		UserImage = userImage;
-		IsOnline = isOnline;
+		LastOnline = lastOnline;
 
 	}
 
@@ -37,19 +37,19 @@ public class User {
 		UserName = userName;
 		UserStatus = userStatus;
 		UserImage = userImage;
-		IsOnline = false;
+		LastOnline = "";
 	}
 
 	public User(){
 
 	}
 
-	public boolean isOnline() {
-		return IsOnline;
+	public String LastOnline() {
+		return LastOnline;
 	}
 
-	public void setOnline(boolean online) {
-		IsOnline = online;
+	public void setOnline(String lastOnline) {
+		LastOnline = lastOnline;
 	}
 
 	public String getUserName() {

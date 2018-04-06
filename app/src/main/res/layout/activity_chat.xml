@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.ChatActivity">
+
+    <include layout="@layout/chat_custom_bar"
+             android:id="@+id/appBar_ChatActivity"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:id="@+id/img_Photo_Chat"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_selec_image_to_send"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            />
+        <EditText
+            android:id="@+id/edt_InputMessage_Chat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Input message..."
+            android:layout_toRightOf="@id/img_Photo_Chat"
+            android:layout_toLeftOf="@id/btn_Send_Chat"
+            android:gravity="center_vertical"/>
+
+        <ImageView
+            android:id="@+id/btn_Send_Chat"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_send_message"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

@@ -47,7 +47,7 @@ public class OfflineData extends Application {
 			UserReference.addValueEventListener(new ValueEventListener() {
 				@Override
 				public void onDataChange(DataSnapshot dataSnapshot) {
-					UserReference.child(Common.ONLINE_TAG).onDisconnect().setValue(false);
+					UserReference.child(Common.ONLINE_TAG).onDisconnect().setValue(System.currentTimeMillis());
 				}
 
 				@Override

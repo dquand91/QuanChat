@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryDark">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tvUserName_chatAppBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Name"
+            android:layout_margin="5dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/tvLastSeen_chatAppBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last Seen"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_below="@id/tvUserName_chatAppBar"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"/>
+
+        <ImageView
+            android:id="@+id/imgUser_chatAppBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/user"/>
+    </RelativeLayout>
+
+
+</android.support.v7.widget.Toolbar>

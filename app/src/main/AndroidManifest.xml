@@ -5,17 +5,17 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
+        android:name=".Utils.OfflineData"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".Utils.OfflineData">
+        android:theme="@style/AppTheme">
         <service
             android:name=".MyFirebaseMessagingService"
             android:enabled="true"
@@ -25,9 +25,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-
-        <service
-            android:name=".MyFirebaseInstanceIDService">
+        <service android:name=".MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
@@ -68,11 +66,13 @@
         <activity android:name=".Activities.ProfileActivity">
             <intent-filter>
                 <action android:name="luongduongquan.com.quanchat_TARGET_NOTIFICATION"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-
-
+        <activity android:name=".Activities.ChatActivity"
+            android:parentActivityName=".Activities.MainActivity">
+        </activity>
     </application>
 
 </manifest>

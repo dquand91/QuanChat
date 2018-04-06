@@ -2,7 +2,13 @@ package luongduongquan.com.quanchat.Utils;
 
 import android.app.Application;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
@@ -11,6 +17,10 @@ import com.squareup.picasso.Picasso;
  */
 
 public class OfflineData extends Application {
+
+	private DatabaseReference UserReference;
+	private FirebaseAuth mAuth;
+	private FirebaseUser current_User;
 
 	@Override
 	public void onCreate() {
@@ -26,6 +36,26 @@ public class OfflineData extends Application {
 		imageOfflineBuilt.setIndicatorsEnabled(true);
 		imageOfflineBuilt.setLoggingEnabled(true);
 		Picasso.setSingletonInstance(imageOfflineBuilt);
+
+		mAuth = FirebaseAuth.getInstance();
+		current_User = mAuth.getCurrentUser();
+
+		if(current_User != null){
+			String online_user_id = mAuth.getCurrentUser().getUid();
+			UserReference = FirebaseDatabase.getInstance().getReference().child(Common.USERS_TAG).child(online_user_id);
+
+			UserReference.addValueEventListener(new ValueEventListener() {
+				@Override
+				public void onDataChange(DataSnapshot dataSnapshot) {
+					UserReference.child(Common.ONLINE_TAG).onDisconnect().setValue(false);
+				}
+
+				@Override
+				public void onCancelled(DatabaseError databaseError) {
+
+				}
+			});
+		}
 
 	}
 }

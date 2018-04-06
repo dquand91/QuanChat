@@ -77,9 +77,11 @@ public class FriendsFragment extends Fragment {
 						if(dataSnapshot.exists()){
 							String userName = dataSnapshot.child(Common.USER_NAME_TAG).getValue().toString();
 							String imageURL = dataSnapshot.child(Common.USER_IMAGE_TAG).getValue().toString();
+							boolean isOnline = (boolean) dataSnapshot.child(Common.ONLINE_TAG).getValue();
 
 							viewHolder.setUserName(userName);
 							viewHolder.setAvatar(mainView.getContext(),imageURL);
+							viewHolder.setStatus(isOnline);
 						}else {
 							Toast.makeText(mainView.getContext(), "Error....", Toast.LENGTH_SHORT).show();
 						}

@@ -3,6 +3,7 @@ package luongduongquan.com.quanchat;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -18,6 +19,7 @@ public class FriendsViewHolder extends RecyclerView.ViewHolder{
 	private CircleImageView imgUser_holder;
 	private TextView tvUserName, tvDate;
 	private CustomOnClick mCustomOnClick;
+	private ImageView imgStatus;
 	public View mView;
 
 	public interface CustomOnClick{
@@ -48,6 +50,15 @@ public class FriendsViewHolder extends RecyclerView.ViewHolder{
 	public void setTvDate(String date){
 		tvDate = mView.findViewById(R.id.userStatus_item);
 		tvDate.setText(date);
+	}
+
+	public void setStatus(boolean isOnline){
+		imgStatus = mView.findViewById(R.id.imgOnlineStatus_item);
+		if(isOnline){
+			imgStatus.setVisibility(View.VISIBLE);
+		} else {
+			imgStatus.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	public void setCustomOnClick(CustomOnClick customOnClick){

@@ -13,6 +13,7 @@ public class Common {
 	public static final String USER_STATUS_TAG = "user_status";
 	public static final String USER_THUMB_IMAGE_TAG = "user_thumb_image";
 	public static final String DEVICE_TOKEN_TAG = "device_token";
+	public static final String ONLINE_TAG = "online";
 
 	public static final String FRIEND_REQUEST_TYPE_TAG = "request_type";
 	public static final String REQUEST_SEND_TAG = "sent";

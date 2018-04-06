@@ -106,6 +106,7 @@ public class SignUpActivity extends AppCompatActivity {
 		storeUserDefaultDataReference.child(Common.USER_STATUS_TAG).setValue("This is the status. Have a nice day.");
 		storeUserDefaultDataReference.child(Common.USER_IMAGE_TAG).setValue(Common.USER_DEFAULT_IMAGE);
 		storeUserDefaultDataReference.child(Common.DEVICE_TOKEN_TAG).setValue(device_token);
+		storeUserDefaultDataReference.child(Common.ONLINE_TAG).setValue(false);
 		storeUserDefaultDataReference.child(Common.USER_THUMB_IMAGE_TAG).setValue(Common.USER_DEFAULT_IMAGE).addOnCompleteListener(new OnCompleteListener<Void>() {
 			@Override
 			public void onComplete(@NonNull Task<Void> task) {

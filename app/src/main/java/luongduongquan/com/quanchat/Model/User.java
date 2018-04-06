@@ -21,17 +21,35 @@ public class User {
 	private String UserEmail;
 	private String UserImage;
 	private String UserThumb;
+	private boolean IsOnline;
+
+	public User(String userID,String userName, String userStatus, String userImage, boolean isOnline) {
+		UserID = userID;
+		UserName = userName;
+		UserStatus = userStatus;
+		UserImage = userImage;
+		IsOnline = isOnline;
+
+	}
 
 	public User(String userID,String userName, String userStatus, String userImage) {
 		UserID = userID;
 		UserName = userName;
 		UserStatus = userStatus;
 		UserImage = userImage;
-
+		IsOnline = false;
 	}
 
 	public User(){
 
+	}
+
+	public boolean isOnline() {
+		return IsOnline;
+	}
+
+	public void setOnline(boolean online) {
+		IsOnline = online;
 	}
 
 	public String getUserName() {

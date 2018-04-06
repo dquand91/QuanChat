@@ -1,4 +1,4 @@
-package luongduongquan.com.quanchat;
+package luongduongquan.com.quanchat.Activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -28,6 +28,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import luongduongquan.com.quanchat.R;
 import luongduongquan.com.quanchat.Utils.Common;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {

@@ -19,7 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import luongduongquan.com.quanchat.FriendsViewHolder;
+import luongduongquan.com.quanchat.ViewHolder.FriendsViewHolder;
 import luongduongquan.com.quanchat.Model.Friends;
 import luongduongquan.com.quanchat.R;
 import luongduongquan.com.quanchat.Utils.Common;

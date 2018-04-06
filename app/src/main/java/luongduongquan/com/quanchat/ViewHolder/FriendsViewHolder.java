@@ -1,4 +1,4 @@
-package luongduongquan.com.quanchat;
+package luongduongquan.com.quanchat.ViewHolder;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import luongduongquan.com.quanchat.R;
 
 /**
  * Created by luong.duong.quan on 4/5/2018.

@@ -1,4 +1,4 @@
-package luongduongquan.com.quanchat;
+package luongduongquan.com.quanchat.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import luongduongquan.com.quanchat.R;
 import luongduongquan.com.quanchat.Utils.Common;
 
 public class LoginActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package luongduongquan.com.quanchat;
+package luongduongquan.com.quanchat.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import luongduongquan.com.quanchat.Adapter.TabsPagerAdapter;
+import luongduongquan.com.quanchat.R;
 import luongduongquan.com.quanchat.Utils.Common;
 
 public class MainActivity extends AppCompatActivity {

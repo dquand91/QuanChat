@@ -1,4 +1,4 @@
-package luongduongquan.com.quanchat;
+package luongduongquan.com.quanchat.Activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import luongduongquan.com.quanchat.R;
 import luongduongquan.com.quanchat.Utils.Common;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {

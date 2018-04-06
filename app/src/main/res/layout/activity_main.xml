@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="luongduongquan.com.quanchat.MainActivity">
+    tools:context="luongduongquan.com.quanchat.Activities.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar_layout_main"

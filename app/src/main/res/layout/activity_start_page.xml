@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/startpage"
-    tools:context="luongduongquan.com.quanchat.StartPageActivity">
+    tools:context="luongduongquan.com.quanchat.Activities.StartPageActivity">
 
     <Button
         android:id="@+id/btnHadAccount"

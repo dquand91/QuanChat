@@ -1,4 +1,4 @@
-package luongduongquan.com.quanchat;
+package luongduongquan.com.quanchat.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,6 +21,7 @@ import java.util.List;
 
 import luongduongquan.com.quanchat.Adapter.AllUserAdapter;
 import luongduongquan.com.quanchat.Model.User;
+import luongduongquan.com.quanchat.R;
 import luongduongquan.com.quanchat.Utils.Common;
 
 public class AllUserActivity extends AppCompatActivity {

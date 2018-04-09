@@ -10,11 +10,21 @@
     <include layout="@layout/chat_custom_bar"
              android:id="@+id/appBar_ChatActivity"/>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listMessage_ChatActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appBar_ChatActivity"
+        android:layout_above="@id/layoutBottom_ChatActivity">
+
+    </android.support.v7.widget.RecyclerView>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp"
+        android:id="@+id/layoutBottom_ChatActivity">
 
         <ImageView
             android:id="@+id/img_Photo_Chat"

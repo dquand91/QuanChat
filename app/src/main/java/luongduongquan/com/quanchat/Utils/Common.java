@@ -35,6 +35,13 @@ public class Common {
 
 	public static final String DATE_TAG = "date";
 
+	public static final String MESSAGES_CHAT_TAG = "Messages";
+	public static final String BODY_CHAT_TAG = "body";
+	public static final String SEEN_CHAT_TAG = "seen";
+	public static final String TYPE_CHAT_TAG = "type";
+	public static final String TIME_CHAT_TAG = "time";
+	public static final String FROM_CHAT_TAG = "from";
+
 
 
 

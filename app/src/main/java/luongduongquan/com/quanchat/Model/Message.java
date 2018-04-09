@@ -2,30 +2,32 @@ package luongduongquan.com.quanchat.Model;
 
 public class Message {
 
-	private String id;
 	private String body;
 	private String type;
 	private boolean seen;
 	private long time;
+	private String from;
 
-	public Message(String id, String body, String type, boolean seen, long time) {
-		this.id = id;
+	public Message( String body, String type, boolean seen, long time, String from) {
+
 		this.body = body;
 		this.type = type;
 		this.seen = seen;
 		this.time = time;
+		this.from = from;
 	}
 
 	public Message() {
 	}
 
-	public String getId() {
-		return id;
+	public String getFrom() {
+		return from;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setFrom(String from) {
+		this.from = from;
 	}
+
 
 	public String getBody() {
 		return body;

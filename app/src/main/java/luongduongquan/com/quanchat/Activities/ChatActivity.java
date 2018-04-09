@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,8 +30,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import luongduongquan.com.quanchat.LastSeenTime;
+import luongduongquan.com.quanchat.Model.Message;
 import luongduongquan.com.quanchat.R;
 import luongduongquan.com.quanchat.Utils.Common;
+import luongduongquan.com.quanchat.ViewHolder.MessageViewHolder;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -53,6 +57,7 @@ public class ChatActivity extends AppCompatActivity {
 	private String localUserID;
 	private RecyclerView recyclerViewMessage;
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,6 +70,8 @@ public class ChatActivity extends AppCompatActivity {
 		remote_userName = getIntent().getExtras().get(Common.USER_NAME_TAG).toString();
 
 		userReference = FirebaseDatabase.getInstance().getReference();
+		Log.d(TAG, "localUserID = " + localUserID + " --- " + "remote_userID = " + remote_userID);
+		messageReference = FirebaseDatabase.getInstance().getReference().child(Common.MESSAGES_CHAT_TAG).child(localUserID).child(remote_userID);
 
 		toolbarChat = (Toolbar) findViewById(R.id.appBar_ChatActivity);
 		setSupportActionBar(toolbarChat);
@@ -82,6 +89,8 @@ public class ChatActivity extends AppCompatActivity {
 		userNameTitle = findViewById(R.id.tvUserName_chatAppBar);
 		userLastSendTitle = findViewById(R.id.tvLastSeen_chatAppBar);
 		recyclerViewMessage = findViewById(R.id.listMessage_ChatActivity);
+		recyclerViewMessage.setHasFixedSize(true);
+		recyclerViewMessage.setLayoutManager(new LinearLayoutManager(getBaseContext()));
 
 		btnAddPhoto = findViewById(R.id.img_Photo_Chat);
 		btnSend = findViewById(R.id.btn_Send_Chat);
@@ -133,8 +142,84 @@ public class ChatActivity extends AppCompatActivity {
 		});
 
 
+		FirebaseRecyclerAdapter<Message, MessageViewHolder> adapterFireBase = new FirebaseRecyclerAdapter<Message, MessageViewHolder>(Message.class,
+				R.layout.item_message_right,
+				MessageViewHolder.class,
+				messageReference) {
+			@Override
+			protected void populateViewHolder(final MessageViewHolder viewHolder, final Message messageModel, int position) {
+				final String message_from = messageModel.getFrom();
+				Log.d(TAG, "message_from = " + message_from);
+				if(message_from.equals(localUserID)){
+					Log.d(TAG,"LOCAL " + "id = " + position + " --- " + "from = " + message_from + " --- "
+							+ "body =" + messageModel.getBody());
 
 
+					// set message image.
+					userReference.child(Common.USERS_TAG).child(localUserID).addValueEventListener(new ValueEventListener() {
+						@Override
+						public void onDataChange(DataSnapshot dataSnapshot) {
+							if(dataSnapshot != null){
+								Log.d(TAG, "dataSnapshot = " + dataSnapshot.toString());
+								viewHolder.setContent(messageModel.getBody()); // set message body
+								viewHolder.setAvatar(ChatActivity.this, dataSnapshot.child(Common.USER_IMAGE_TAG).getValue().toString());
+							}
+						}
+
+						@Override
+						public void onCancelled(DatabaseError databaseError) {
+
+						}
+					});
+
+				} else {
+					Log.d(TAG,"REMOTE " + "id = " + position + " --- " + "from = " + message_from + " --- "
+							+ "body =" + messageModel.getBody());
+//					final String remote_user_id = getRef(position).getKey();
+
+					// set message image.
+					userReference.child(Common.USERS_TAG).child(remote_userID).addValueEventListener(new ValueEventListener() {
+						@Override
+						public void onDataChange(DataSnapshot dataSnapshot) {
+							if(dataSnapshot != null){
+								Log.d(TAG, "dataSnapshot = " + dataSnapshot.toString());
+								viewHolder.setAvatar(ChatActivity.this, dataSnapshot.child(Common.USER_IMAGE_TAG).getValue().toString());
+								viewHolder.setContent(messageModel.getBody()); // set message body
+								viewHolder.setRemoteMessage();
+							}
+						}
+
+						@Override
+						public void onCancelled(DatabaseError databaseError) {
+
+						}
+					});
+
+				}
+
+			}
+		};
+
+
+
+
+
+
+
+
+//		adapter = new MessageAdapter<Message, MessageViewHolder>(Message.class, R.layout.item_message_right, MessageViewHolder.class,
+//				messageReference, userReference, localUserID, this.getBaseContext());
+
+		recyclerViewMessage.setAdapter(adapterFireBase);
+		adapterFireBase.notifyDataSetChanged();
+
+
+	}
+
+
+	@Override
+	protected void onStart() {
+		super.onStart();
 
 	}
 

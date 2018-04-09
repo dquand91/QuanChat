@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:padding="5dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgUserItem_Chat"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/user"/>
+        android:src="@drawable/user"
+        android:layout_alignParentRight="true"/>
 
     <TextView
         android:id="@+id/tvMessageUserItem_Chat"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/imgUserItem_Chat"
-        android:text="Message content"
+        android:layout_toLeftOf="@id/imgUserItem_Chat"
+        android:text="Message content right"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/message_text_background"
+        android:background="@drawable/message_local_background"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        android:padding="20dp"/>
+        android:padding="15dp"
+        android:gravity="end"/>
 
 </RelativeLayout>

@@ -1,8 +1,11 @@
 package luongduongquan.com.quanchat.ViewHolder;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -44,5 +47,25 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
 
 	public void setCustomOnClick(MessageViewHolder.CustomOnClick customOnClick){
 		mCustomOnClick = customOnClick;
+	}
+
+	public void setRemoteMessage(){
+
+		//imgUserMessage_holder ALIGN_PARENT_LEFT
+		RelativeLayout.LayoutParams layoutParamsImg =(RelativeLayout.LayoutParams)imgUserMessage_holder.getLayoutParams();
+		layoutParamsImg.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		layoutParamsImg.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		imgUserMessage_holder.setLayoutParams(layoutParamsImg);
+
+		//
+		RelativeLayout.LayoutParams layoutParamsText =(RelativeLayout.LayoutParams)tvContentMessage_holder.getLayoutParams();
+		layoutParamsText.addRule(RelativeLayout.RIGHT_OF, R.id.imgUserItem_Chat);
+		layoutParamsText.addRule(RelativeLayout.LEFT_OF, 0);
+		tvContentMessage_holder.setLayoutParams(layoutParamsText);
+
+		Drawable mDrawable = ContextCompat.getDrawable(mView.getContext(), R.drawable.message_remote_background);
+		tvContentMessage_holder.setBackground(mDrawable);
+
+
 	}
 }

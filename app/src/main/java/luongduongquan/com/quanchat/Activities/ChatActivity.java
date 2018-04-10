@@ -56,6 +56,7 @@ public class ChatActivity extends AppCompatActivity {
 	private FirebaseAuth mAuth;
 	private String localUserID;
 	private RecyclerView recyclerViewMessage;
+	FirebaseRecyclerAdapter<Message, MessageViewHolder> adapterFireBase;
 
 
 	@Override
@@ -142,7 +143,7 @@ public class ChatActivity extends AppCompatActivity {
 		});
 
 
-		FirebaseRecyclerAdapter<Message, MessageViewHolder> adapterFireBase = new FirebaseRecyclerAdapter<Message, MessageViewHolder>(Message.class,
+		adapterFireBase = new FirebaseRecyclerAdapter<Message, MessageViewHolder>(Message.class,
 				R.layout.item_message_right,
 				MessageViewHolder.class,
 				messageReference) {
@@ -150,6 +151,10 @@ public class ChatActivity extends AppCompatActivity {
 			protected void populateViewHolder(final MessageViewHolder viewHolder, final Message messageModel, int position) {
 				final String message_from = messageModel.getFrom();
 				Log.d(TAG, "message_from = " + message_from);
+
+				viewHolder.setContent(messageModel.getBody()); // set message body
+				viewHolder.initAvatar();
+
 				if(message_from.equals(localUserID)){
 					Log.d(TAG,"LOCAL " + "id = " + position + " --- " + "from = " + message_from + " --- "
 							+ "body =" + messageModel.getBody());
@@ -161,8 +166,8 @@ public class ChatActivity extends AppCompatActivity {
 						public void onDataChange(DataSnapshot dataSnapshot) {
 							if(dataSnapshot != null){
 								Log.d(TAG, "dataSnapshot = " + dataSnapshot.toString());
-								viewHolder.setContent(messageModel.getBody()); // set message body
 								viewHolder.setAvatar(ChatActivity.this, dataSnapshot.child(Common.USER_IMAGE_TAG).getValue().toString());
+								viewHolder.setLocalMessage();
 							}
 						}
 
@@ -175,6 +180,7 @@ public class ChatActivity extends AppCompatActivity {
 				} else {
 					Log.d(TAG,"REMOTE " + "id = " + position + " --- " + "from = " + message_from + " --- "
 							+ "body =" + messageModel.getBody());
+
 //					final String remote_user_id = getRef(position).getKey();
 
 					// set message image.
@@ -184,7 +190,6 @@ public class ChatActivity extends AppCompatActivity {
 							if(dataSnapshot != null){
 								Log.d(TAG, "dataSnapshot = " + dataSnapshot.toString());
 								viewHolder.setAvatar(ChatActivity.this, dataSnapshot.child(Common.USER_IMAGE_TAG).getValue().toString());
-								viewHolder.setContent(messageModel.getBody()); // set message body
 								viewHolder.setRemoteMessage();
 							}
 						}
@@ -255,6 +260,7 @@ public class ChatActivity extends AppCompatActivity {
 						Log.d(TAG, databaseError.getMessage().toString());
 					}
 					edtInput.setText("");
+					adapterFireBase.notifyDataSetChanged();
 				}
 			});
 		}

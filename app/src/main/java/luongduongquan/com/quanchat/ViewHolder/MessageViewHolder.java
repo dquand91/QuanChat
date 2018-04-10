@@ -65,6 +65,8 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
 		RelativeLayout.LayoutParams layoutParamsText =(RelativeLayout.LayoutParams)tvContentMessage_holder.getLayoutParams();
 		layoutParamsText.addRule(RelativeLayout.LEFT_OF, R.id.imgUserItem_Chat);
 		layoutParamsText.addRule(RelativeLayout.RIGHT_OF, 0);
+		layoutParamsText.setMargins(0,0,5,0);
+
 		tvContentMessage_holder.setLayoutParams(layoutParamsText);
 		tvContentMessage_holder.setGravity(Gravity.END);
 
@@ -84,6 +86,8 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
 		RelativeLayout.LayoutParams layoutParamsText =(RelativeLayout.LayoutParams)tvContentMessage_holder.getLayoutParams();
 		layoutParamsText.addRule(RelativeLayout.RIGHT_OF, R.id.imgUserItem_Chat);
 		layoutParamsText.addRule(RelativeLayout.LEFT_OF, 0);
+		layoutParamsText.setMargins(5,0,0,0);
+
 		tvContentMessage_holder.setLayoutParams(layoutParamsText);
 		tvContentMessage_holder.setGravity(Gravity.START);
 

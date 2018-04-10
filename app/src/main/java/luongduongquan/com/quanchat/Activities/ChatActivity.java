@@ -155,6 +155,13 @@ public class ChatActivity extends AppCompatActivity {
 				viewHolder.setContent(messageModel.getBody()); // set message body
 				viewHolder.initAvatar();
 
+				viewHolder.setCustomOnClick(new MessageViewHolder.CustomOnClick() {
+					@Override
+					public void OnClickListenerCustom(View view, int position) {
+						Toast.makeText(ChatActivity.this, "position = " + position, Toast.LENGTH_SHORT).show();
+					}
+				});
+
 				if(message_from.equals(localUserID)){
 					Log.d(TAG,"LOCAL " + "id = " + position + " --- " + "from = " + message_from + " --- "
 							+ "body =" + messageModel.getBody());

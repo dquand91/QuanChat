@@ -288,7 +288,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 	private void acceptRequest() {
 
 		Calendar calendar = Calendar.getInstance();
-		final SimpleDateFormat currentDateFormat = new SimpleDateFormat("dd-MMM-yyyy 'at' HH:mm:ss z");
+		final SimpleDateFormat currentDateFormat = new SimpleDateFormat("dd-MMM-yyyy 'at' HH:mm:ss");
 		final String saveCurrentDate = currentDateFormat.format(calendar.getTime());
 
 		friendsDataReferece.child(currentUserID).child(receiverID).child(Common.DATE_TAG).setValue(saveCurrentDate)

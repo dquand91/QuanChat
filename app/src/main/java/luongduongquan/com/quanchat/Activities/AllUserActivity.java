@@ -158,16 +158,24 @@ public class AllUserActivity extends AppCompatActivity {
 //			}
 //		});
 
-
-
-
-
 		mToolBar = findViewById(R.id.appBar_allUserList);
 		setSupportActionBar(mToolBar);
 		getSupportActionBar().setTitle("All User List");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		finish();
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		mAuth = FirebaseAuth.getInstance();
 	}
 
 	private void updateListUser(DataSnapshot dataSnapshot){
@@ -187,9 +195,16 @@ public class AllUserActivity extends AppCompatActivity {
 					userImage = data.child(Common.USER_IMAGE_TAG).getValue().toString();
 				}
 				User user = new User(userID, userName, userStatus, userImage);
-				if (user.getUserID().equals(mAuth.getCurrentUser().getUid())){
-					continue;
+				if(mAuth !=null && mAuth.getCurrentUser() != null){
+					String local_userID = mAuth.getCurrentUser().getUid();
+					if(!local_userID.isEmpty()){
+						if (user.getUserID().equals(local_userID)){
+							continue;
+						}
+					}
 				}
+
+
 				mListUser.add(user);
 
 				Log.d("QuanTest", "userID = " + userID

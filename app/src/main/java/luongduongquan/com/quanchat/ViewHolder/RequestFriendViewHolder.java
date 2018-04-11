@@ -55,8 +55,14 @@ public class RequestFriendViewHolder extends RecyclerView.ViewHolder {
 		tvStatus.setText(status);
 	}
 
-	public void setButtonAccept(int visibility, View.OnClickListener clickListener){
-		btnAccept.setVisibility(visibility);
+	public void setButtonAccept(final int visibility, View.OnClickListener clickListener){
+		btnAccept.post(new Runnable() {
+			@Override
+			public void run() {
+				btnAccept.setVisibility(visibility);
+			}
+		});
+
 		if(visibility == View.VISIBLE){
 			btnAccept.setOnClickListener(clickListener);
 		}

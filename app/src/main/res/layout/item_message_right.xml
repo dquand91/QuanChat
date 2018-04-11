@@ -11,17 +11,55 @@
         android:src="@drawable/user"
         android:layout_alignParentRight="true"/>
 
-    <TextView
-        android:id="@+id/tvMessageUserItem_Chat"
+    <LinearLayout
+        android:id="@+id/layoutBodyMessageItem_Chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/imgUserItem_Chat"
-        android:text="Message content right"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/message_local_background"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:padding="15dp"
-        android:gravity="end"/>
+        android:orientation="vertical"
+        android:background="@drawable/message_local_background">
+
+        <TextView
+            android:id="@+id/tvMessageUserItem_Chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Message content right"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:padding="10dp"
+            android:textAlignment="textEnd"/>
+
+        <RelativeLayout
+            android:id="@+id/layoutPreviewImageItem_Chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/imgPreviewImageItem_Chat"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/user"
+                />
+
+            <TextView
+                android:id="@+id/tvPreviewNameItem_Chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Message content right"
+                android:layout_toRightOf="@+id/imgPreviewImageItem_Chat"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                android:padding="5dp"/>
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>

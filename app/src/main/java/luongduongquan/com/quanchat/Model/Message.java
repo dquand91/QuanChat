@@ -7,17 +7,27 @@ public class Message {
 	private boolean seen;
 	private long time;
 	private String from;
+	private String file;
 
-	public Message( String body, String type, boolean seen, long time, String from) {
+	public Message( String body, String type, boolean seen, long time, String from, String file) {
 
 		this.body = body;
 		this.type = type;
 		this.seen = seen;
 		this.time = time;
 		this.from = from;
+		this.file = file;
 	}
 
 	public Message() {
+	}
+
+	public String getFile() {
+		return file;
+	}
+
+	public void setFile(String file) {
+		this.file = file;
 	}
 
 	public String getFrom() {

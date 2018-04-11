@@ -41,6 +41,7 @@ public class Common {
 	public static final String TYPE_CHAT_TAG = "type";
 	public static final String TIME_CHAT_TAG = "time";
 	public static final String FROM_CHAT_TAG = "from";
+	public static final String FILE_CHAT_TAG = "file";
 
 
 

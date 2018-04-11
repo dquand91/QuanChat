@@ -1,7 +1,12 @@
 package luongduongquan.com.quanchat.Activities;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,10 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +32,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -58,6 +69,13 @@ public class ChatActivity extends AppCompatActivity {
 	private RecyclerView recyclerViewMessage;
 	FirebaseRecyclerAdapter<Message, MessageViewHolder> adapterFireBase;
 
+	private static final int GALLERY_PICK = 1;
+
+	private ImageView imgPreview, btnDeletePreview;
+	private TextView tvPreviewImgName;
+	private RelativeLayout layoutPreviewImage;
+	private Uri imageSendURI;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +89,6 @@ public class ChatActivity extends AppCompatActivity {
 		remote_userName = getIntent().getExtras().get(Common.USER_NAME_TAG).toString();
 
 		userReference = FirebaseDatabase.getInstance().getReference();
-		Log.d(TAG, "localUserID = " + localUserID + " --- " + "remote_userID = " + remote_userID);
 		messageReference = FirebaseDatabase.getInstance().getReference().child(Common.MESSAGES_CHAT_TAG).child(localUserID).child(remote_userID);
 
 		toolbarChat = (Toolbar) findViewById(R.id.appBar_ChatActivity);
@@ -96,6 +113,11 @@ public class ChatActivity extends AppCompatActivity {
 		btnAddPhoto = findViewById(R.id.img_Photo_Chat);
 		btnSend = findViewById(R.id.btn_Send_Chat);
 		edtInput = findViewById(R.id.edt_InputMessage_Chat);
+
+		imgPreview = findViewById(R.id.imgPreviewImage_Chat);
+		btnDeletePreview = findViewById(R.id.btnDeletePreviewImage_Chat);
+		tvPreviewImgName = findViewById(R.id.tvPreviewImageName_Chat);
+		layoutPreviewImage = findViewById(R.id.layoutPreviewImage_Chat);
 
 		userNameTitle.setText(remote_userName);
 		userReference.child(Common.USERS_TAG).child(remote_userID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -138,7 +160,35 @@ public class ChatActivity extends AppCompatActivity {
 		btnSend.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				sendMessage();
+				Toast.makeText(ChatActivity.this, "Sending message...", Toast.LENGTH_LONG).show();
+				if(layoutPreviewImage.getVisibility() == View.VISIBLE && imageSendURI == null){
+					// send message with attached image
+					sendImageMessage(false, null);
+				} else {
+					// send only message
+					sendImageMessage(true, imageSendURI);
+				}
+
+			}
+		});
+
+		btnAddPhoto.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intentToGallery = new Intent();
+				intentToGallery.setAction(Intent.ACTION_GET_CONTENT);
+				intentToGallery.setType("image/*");
+				startActivityForResult(intentToGallery, GALLERY_PICK);
+			}
+		});
+
+		btnDeletePreview.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				imgPreview.setImageResource(R.drawable.user);
+				tvPreviewImgName.setText("");
+				layoutPreviewImage.setVisibility(View.GONE);
+				imageSendURI = null;
 			}
 		});
 
@@ -150,10 +200,11 @@ public class ChatActivity extends AppCompatActivity {
 			@Override
 			protected void populateViewHolder(final MessageViewHolder viewHolder, final Message messageModel, int position) {
 				final String message_from = messageModel.getFrom();
-				Log.d(TAG, "message_from = " + message_from);
+//				Log.d(TAG, "message_from = " + message_from);
 
+				viewHolder.initView();
 				viewHolder.setContent(messageModel.getBody()); // set message body
-				viewHolder.initAvatar();
+
 
 				viewHolder.setCustomOnClick(new MessageViewHolder.CustomOnClick() {
 					@Override
@@ -163,8 +214,8 @@ public class ChatActivity extends AppCompatActivity {
 				});
 
 				if(message_from.equals(localUserID)){
-					Log.d(TAG,"LOCAL " + "id = " + position + " --- " + "from = " + message_from + " --- "
-							+ "body =" + messageModel.getBody());
+//					Log.d(TAG,"LOCAL " + "id = " + position + " --- " + "from = " + message_from + " --- "
+//							+ "body =" + messageModel.getBody());
 
 
 					// set message image.
@@ -172,7 +223,7 @@ public class ChatActivity extends AppCompatActivity {
 						@Override
 						public void onDataChange(DataSnapshot dataSnapshot) {
 							if(dataSnapshot != null){
-								Log.d(TAG, "dataSnapshot = " + dataSnapshot.toString());
+//								Log.d(TAG, "dataSnapshot = " + dataSnapshot.toString());
 								viewHolder.setAvatar(ChatActivity.this, dataSnapshot.child(Common.USER_IMAGE_TAG).getValue().toString());
 								viewHolder.setLocalMessage();
 							}
@@ -185,8 +236,8 @@ public class ChatActivity extends AppCompatActivity {
 					});
 
 				} else {
-					Log.d(TAG,"REMOTE " + "id = " + position + " --- " + "from = " + message_from + " --- "
-							+ "body =" + messageModel.getBody());
+//					Log.d(TAG,"REMOTE " + "id = " + position + " --- " + "from = " + message_from + " --- "
+//							+ "body =" + messageModel.getBody());
 
 //					final String remote_user_id = getRef(position).getKey();
 
@@ -195,7 +246,7 @@ public class ChatActivity extends AppCompatActivity {
 						@Override
 						public void onDataChange(DataSnapshot dataSnapshot) {
 							if(dataSnapshot != null){
-								Log.d(TAG, "dataSnapshot = " + dataSnapshot.toString());
+//								Log.d(TAG, "dataSnapshot = " + dataSnapshot.toString());
 								viewHolder.setAvatar(ChatActivity.this, dataSnapshot.child(Common.USER_IMAGE_TAG).getValue().toString());
 								viewHolder.setRemoteMessage();
 							}
@@ -229,16 +280,51 @@ public class ChatActivity extends AppCompatActivity {
 	}
 
 
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if(requestCode == GALLERY_PICK && resultCode == RESULT_OK && data != null){
+			imageSendURI = data.getData();
+
+			String filePath = getRealPathFromURI(imageSendURI);
+//			Log.d(TAG, "data = " + data.toString() + " --- " + "imageURI = " + imageURI + " --- " + "path = " + mime);
+
+			if(layoutPreviewImage.getVisibility() == View.GONE){
+				layoutPreviewImage.setVisibility(View.VISIBLE);
+			}
+			Picasso.with(ChatActivity.this).load(imageSendURI).into(imgPreview);
+			tvPreviewImgName.setText(filePath);
+
+
+
+
+
+			// Tới đây sẽ gọi tới Activity để Crop Image.
+			// Crop xong image thì nó sẽ quay lại app và sẽ quay lại callBack onActivityResult() này tiếp.
+			// Nó sẽ xuống chỗ "CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE"
+
+		}
+	}
+
+	public String getRealPathFromURI(Uri uri) {
+		Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+		cursor.moveToFirst();
+		int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+		return cursor.getString(idx);
+	}
+
 	@Override
 	protected void onStart() {
 		super.onStart();
 
 	}
 
-	private void sendMessage() {
+	private void sendMessage(String linkFile, String message) {
 
-		String messageTextSend = edtInput.getText().toString();
-		if(TextUtils.isEmpty(messageTextSend)){
+
+		if(TextUtils.isEmpty(message)){
 			Toast.makeText(ChatActivity.this, "Please input message.", Toast.LENGTH_SHORT).show();
 		} else {
 			String message_sender_ref = "Messages/" + localUserID + "/" + remote_userID;
@@ -250,11 +336,12 @@ public class ChatActivity extends AppCompatActivity {
 			String message_push_id = message_key.getKey();
 
 			Map messageTextBody = new HashMap();
-			messageTextBody.put(Common.BODY_CHAT_TAG, messageTextSend);
+			messageTextBody.put(Common.BODY_CHAT_TAG, message);
 			messageTextBody.put(Common.SEEN_CHAT_TAG, false);
 			messageTextBody.put(Common.TYPE_CHAT_TAG, "text");
 			messageTextBody.put(Common.TIME_CHAT_TAG, ServerValue.TIMESTAMP);
 			messageTextBody.put(Common.FROM_CHAT_TAG, localUserID);
+			messageTextBody.put(Common.FILE_CHAT_TAG, linkFile);
 
 			Map messageBodyDetail = new HashMap();
 			messageBodyDetail.put(message_sender_ref + "/" + message_push_id, messageTextBody);
@@ -266,11 +353,45 @@ public class ChatActivity extends AppCompatActivity {
 					if(databaseError != null){
 						Log.d(TAG, databaseError.getMessage().toString());
 					}
-					edtInput.setText("");
 					adapterFireBase.notifyDataSetChanged();
+//					imageSendURI = null;
+//					layoutPreviewImage.setVisibility(View.GONE);
+//					imgPreview.setImageResource(R.drawable.user);
+//					tvPreviewImgName.setText("");
+
 				}
 			});
 		}
+
+	}
+
+	private void sendImageMessage(boolean isSendFile, Uri fileURI){
+		final String message =  edtInput.getText().toString();
+		if(isSendFile){
+			StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Message_Image"); // Profile_Image là tên do mình đặt để tạo thư mục tên "Profile_Image" trên FireBase storage.
+
+			StorageReference filePath = storageReference.child(localUserID +System.currentTimeMillis() + ".jpg");
+
+			filePath.putFile(fileURI).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+				@Override
+				public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+					if(task.isSuccessful()){
+						Toast.makeText(ChatActivity.this, "Sending your image to FireBase Storage...", Toast.LENGTH_LONG).show();
+						String downloadURI = task.getResult().getDownloadUrl().toString();
+						// After save file
+						sendMessage(downloadURI, message);
+
+					} else {
+						Toast.makeText(ChatActivity.this, "Error occured, can not send file!!!", Toast.LENGTH_SHORT).show();
+						sendMessage("", message);
+					}
+				}
+			});
+			btnDeletePreview.performClick();
+		} else {
+			sendMessage("", message);
+		}
+		edtInput.setText("");
 
 	}
 }

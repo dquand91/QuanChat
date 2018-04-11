@@ -10,14 +10,56 @@
     <include layout="@layout/chat_custom_bar"
              android:id="@+id/appBar_ChatActivity"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/listMessage_ChatActivity"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/appBar_ChatActivity"
         android:layout_above="@id/layoutBottom_ChatActivity">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listMessage_ChatActivity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/layoutPreviewImage_Chat"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@android:color/darker_gray"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imgPreviewImage_Chat"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/user"
+                android:layout_margin="3dp"/>
+
+            <TextView
+                android:id="@+id/tvPreviewImageName_Chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Image name"
+                android:layout_margin="5dp"
+                android:layout_toRightOf="@id/imgPreviewImage_Chat"
+                android:layout_toLeftOf="@+id/btnDeletePreviewImage_Chat"/>
+
+            <ImageView
+                android:id="@+id/btnDeletePreviewImage_Chat"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_delete_image"
+                android:layout_gravity="end"
+                android:layout_alignParentEnd="true"
+                />
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

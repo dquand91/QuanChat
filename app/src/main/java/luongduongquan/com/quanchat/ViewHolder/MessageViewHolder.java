@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +25,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
 	private ImageView imgPreviewImage;
 	private TextView tvFileName;
 	private LinearLayout layoutBodyMessage;
+	private RelativeLayout layoutPreviewImage;
 
 	public interface CustomOnClick{
 		public void OnClickListenerCustom(View view, int position);
@@ -50,6 +52,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
 		imgPreviewImage = mView.findViewById(R.id.imgPreviewImageItem_Chat);
 		tvFileName = mView.findViewById(R.id.tvPreviewNameItem_Chat);
 		layoutBodyMessage = mView.findViewById(R.id.layoutBodyMessageItem_Chat);
+		layoutPreviewImage = mView.findViewById(R.id.layoutPreviewImageItem_Chat);
 	}
 
 	public void setImagePreview(Context context, String urlImage){
@@ -66,6 +69,14 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
 
 	public void setCustomOnClick(MessageViewHolder.CustomOnClick customOnClick){
 		mCustomOnClick = customOnClick;
+	}
+
+	public void setPreviewImage(Context context, int visibility, String linkURI){
+		layoutPreviewImage.setVisibility(visibility);
+		if(visibility == View.VISIBLE){
+			setImagePreview(context, linkURI);
+			tvFileName.setText(linkURI);
+		}
 	}
 
 	public void setLocalMessage(){
@@ -90,9 +101,12 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
 //		layoutBodyMessage.setGravity(Gravity.END);
 
 		Drawable mDrawable = ContextCompat.getDrawable(mView.getContext(), R.drawable.message_local_background);
-		tvContentMessage_holder.setBackground(mDrawable);
+		layoutBodyMessage.setBackground(mDrawable);
 
-		tvContentMessage_holder.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+		LinearLayout.LayoutParams layoutParamsText = (LinearLayout.LayoutParams) tvContentMessage_holder.getLayoutParams();
+		layoutParamsText.gravity = Gravity.END;
+		tvContentMessage_holder.setLayoutParams(layoutParamsText);
+		tvContentMessage_holder.setGravity(Gravity.END);
 
 		//
 //		RelativeLayout.LayoutParams layoutParamsText =(RelativeLayout.LayoutParams)tvContentMessage_holder.getLayoutParams();
@@ -124,9 +138,14 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
 //		layoutBodyMessage.setGravity(Gravity.END);
 
 		Drawable mDrawable = ContextCompat.getDrawable(mView.getContext(), R.drawable.message_remote_background);
-		tvContentMessage_holder.setBackground(mDrawable);
+		layoutBodyMessage.setBackground(mDrawable);
 
-		tvContentMessage_holder.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+
+		LinearLayout.LayoutParams layoutParamsText = (LinearLayout.LayoutParams) tvContentMessage_holder.getLayoutParams();
+		layoutParamsText.gravity = Gravity.START;
+		tvContentMessage_holder.setLayoutParams(layoutParamsText);
+		tvContentMessage_holder.setGravity(Gravity.START);
+
 
 		//
 //		RelativeLayout.LayoutParams layoutParamsText =(RelativeLayout.LayoutParams)tvContentMessage_holder.getLayoutParams();

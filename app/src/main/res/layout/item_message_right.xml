@@ -28,7 +28,8 @@
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:padding="10dp"
-            android:textAlignment="textEnd"/>
+            android:gravity="end"
+            android:layout_gravity="end"/>
 
         <RelativeLayout
             android:id="@+id/layoutPreviewImageItem_Chat"

@@ -1,11 +1,19 @@
 package luongduongquan.com.quanchat.Activities;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +22,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -44,6 +54,7 @@ import luongduongquan.com.quanchat.LastSeenTime;
 import luongduongquan.com.quanchat.Model.Message;
 import luongduongquan.com.quanchat.R;
 import luongduongquan.com.quanchat.Utils.Common;
+import luongduongquan.com.quanchat.Utils.ImagePopup;
 import luongduongquan.com.quanchat.ViewHolder.MessageViewHolder;
 
 public class ChatActivity extends AppCompatActivity {
@@ -161,12 +172,12 @@ public class ChatActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(ChatActivity.this, "Sending message...", Toast.LENGTH_LONG).show();
-				if(layoutPreviewImage.getVisibility() == View.VISIBLE && imageSendURI == null){
+				if(layoutPreviewImage.getVisibility() == View.VISIBLE && imageSendURI != null){
 					// send message with attached image
-					sendImageMessage(false, null);
+					sendImageMessage(true, imageSendURI);
 				} else {
 					// send only message
-					sendImageMessage(true, imageSendURI);
+					sendImageMessage(false, null);
 				}
 
 			}
@@ -205,11 +216,33 @@ public class ChatActivity extends AppCompatActivity {
 				viewHolder.initView();
 				viewHolder.setContent(messageModel.getBody()); // set message body
 
+				if(messageModel.getFile().isEmpty()){
+					viewHolder.setPreviewImage(ChatActivity.this, View.GONE, null);
+				} else {
+					viewHolder.setPreviewImage(ChatActivity.this,View.VISIBLE, messageModel.getFile());
+				}
+
 
 				viewHolder.setCustomOnClick(new MessageViewHolder.CustomOnClick() {
 					@Override
 					public void OnClickListenerCustom(View view, int position) {
 						Toast.makeText(ChatActivity.this, "position = " + position, Toast.LENGTH_SHORT).show();
+
+						if(!messageModel.getFile().isEmpty()){
+							// Tạo 1 đối tượng của class ImagePopup vừa tạo ở trên.
+							// set các thông số cho nó
+							final ImagePopup imagePopup = new ImagePopup(ChatActivity.this);
+							imagePopup.setBackgroundColor(Color.BLACK);
+							imagePopup.setFullScreen(true);
+							imagePopup.setHideCloseIcon(false);
+							imagePopup.setImageOnClickClose(false);
+
+							// Link URL image cần show ra.
+							final String photoUrl = messageModel.getFile();
+							// gắn link photo vào trong cái imagePopup của mình
+							imagePopup.initiatePopupWithPicasso(photoUrl);
+							imagePopup.viewPopup();
+						}
 					}
 				});
 
@@ -279,6 +312,45 @@ public class ChatActivity extends AppCompatActivity {
 
 	}
 
+	public void showImageView(Activity activity, int layout, int imageView, String filePath){
+		// Get screen size
+
+		Display display = activity.getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int screenWidth = size.x;
+		int screenHeight = size.y;
+
+		// Get target image size
+		Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+		int bitmapHeight = bitmap.getHeight();
+		int bitmapWidth = bitmap.getWidth();
+
+		// Scale the image down to fit perfectly into the screen
+		// The value (250 in this case) must be adjusted for phone/tables displays
+		while(bitmapHeight > (screenHeight - 250) || bitmapWidth > (screenWidth - 250)) {
+			bitmapHeight = bitmapHeight / 2;
+			bitmapWidth = bitmapWidth / 2;
+		}
+
+		// Create resized bitmap image
+		BitmapDrawable resizedBitmap = new BitmapDrawable(activity.getBaseContext().getResources(), Bitmap.createScaledBitmap(bitmap, bitmapWidth, bitmapHeight, false));
+
+		// Create dialog
+		Dialog dialog = new Dialog(activity);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(layout);
+
+		ImageView image = (ImageView) dialog.findViewById(imageView);
+
+		// !!! Do here setBackground() instead of setImageDrawable() !!! //
+		image.setBackground(resizedBitmap);
+
+		// Without this line there is a very small border around the image (1px)
+		// In my opinion it looks much better without it, so the choice is up to you.
+		dialog.getWindow().setBackgroundDrawable(null);
+	}
+
 
 
 	@Override
@@ -313,6 +385,28 @@ public class ChatActivity extends AppCompatActivity {
 		cursor.moveToFirst();
 		int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
 		return cursor.getString(idx);
+	}
+
+	public String getFileName(Uri uri) {
+		String result = null;
+		if (uri.getScheme().equals("content")) {
+			Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+			try {
+				if (cursor != null && cursor.moveToFirst()) {
+					result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+				}
+			} finally {
+				cursor.close();
+			}
+		}
+		if (result == null) {
+			result = uri.getPath();
+			int cut = result.lastIndexOf('/');
+			if (cut != -1) {
+				result = result.substring(cut + 1);
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -367,10 +461,11 @@ public class ChatActivity extends AppCompatActivity {
 
 	private void sendImageMessage(boolean isSendFile, Uri fileURI){
 		final String message =  edtInput.getText().toString();
+		String file_name = getFileName(fileURI);
 		if(isSendFile){
 			StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Message_Image"); // Profile_Image là tên do mình đặt để tạo thư mục tên "Profile_Image" trên FireBase storage.
 
-			StorageReference filePath = storageReference.child(localUserID +System.currentTimeMillis() + ".jpg");
+			StorageReference filePath = storageReference.child(file_name + "-" + System.currentTimeMillis() + ".jpg");
 
 			filePath.putFile(fileURI).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
 				@Override
@@ -394,4 +489,5 @@ public class ChatActivity extends AppCompatActivity {
 		edtInput.setText("");
 
 	}
+
 }

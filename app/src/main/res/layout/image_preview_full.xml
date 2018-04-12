@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/popup">
+
+
+    <ImageView android:layout_height="match_parent"
+               android:layout_width="match_parent"
+               android:id="@+id/imageView"
+               android:src="@android:drawable/ic_dialog_alert"/>
+
+    <ImageView android:layout_height="wrap_content"
+               android:layout_width="wrap_content"
+               android:src="@drawable/ic_delete_image"
+               android:id="@+id/closeBtn"
+               android:layout_gravity="end"
+               android:background="@android:color/holo_red_dark"/>
+</FrameLayout>
